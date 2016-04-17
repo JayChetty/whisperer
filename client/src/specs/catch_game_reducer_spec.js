@@ -163,5 +163,30 @@ describe("catch game reducer", function(){
     expect(catchGame(stateLastChickenInRace, action).racingChickenIndex).to.equal(0);
   });
 
+  it('should be able increase racing chicken race steps', function(){
+    var action = {
+      type:'INCREASE_RACING_CHICKEN_STEPS',
+    }
+    var chickensAfterRace = [
+      { id:1,
+        name:'QuickChick',
+        speed:15,
+        scare:1,
+        startScare:1,
+        owner:null,
+        raceSteps:1
+      },
+      {
+        id:2,
+        name:'SlowChick',
+        speed:5,
+        scare:4,
+        startScare:4,
+        owner:null,
+        raceSteps:0
+      }
+    ]
+    expect(catchGame(stateInRace, action).chickens).to.deep.equal(chickensAfterRace);
+  });
 
 })

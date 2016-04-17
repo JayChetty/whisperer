@@ -55,11 +55,17 @@ var catchGameReducer = function(state, action){
     case "SHIFT_RACING_CHICKEN_INDEX":
       var racingChickenIndex = 0 //default to first chicken
       if(!_.isNull(state.racingChickenIndex)){
-        console.log('have state',state.racingChickenIndex);
         var racingChickenIndex = (state.racingChickenIndex + 1) % state.chickens.length
       }
-      console.log('index', racingChickenIndex);
       return Object.assign( {}, state, {racingChickenIndex:racingChickenIndex} );
+    case "INCREASE_RACING_CHICKEN_STEPS":
+      var updatedChickens = state.chickens.map((chicken,index)=>{
+        if(index === state.racingChickenIndex){
+          return Object.assign( {}, chicken, {raceSteps: chicken.raceSteps + 1}  )
+        }
+        return Object.assign( {}, chicken )
+      })
+      return Object.assign( {}, state, {chickens: updatedChickens} );
 
     default:
       return state
