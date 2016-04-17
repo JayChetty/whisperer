@@ -52,12 +52,14 @@
 	var Redux = __webpack_require__(176);
 	var startState = __webpack_require__(187);
 	var Approach = __webpack_require__(188);
+	var Race = __webpack_require__(195);
 	var catchGameReducer = __webpack_require__(189);
 	var _ = __webpack_require__(172);
 	
 	var gameStore = Redux.createStore(catchGameReducer, startState, window.devToolsExtension ? window.devToolsExtension() : undefined);
 	
 	var approach = new Approach(gameStore);
+	var race = new Race(gameStore);
 	
 	var rollDice = function rollDice(numDice) {
 	  var dice = [];
@@ -89,8 +91,9 @@
 	      approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken);
 	    },
 	    onRaceChicken: function onRaceChicken(chicken) {
-	      gameStore.dispatch({ type: 'INCREASE_RACING_CHICKEN_STEPS' });
-	      gameStore.dispatch({ type: 'SHIFT_RACING_CHICKEN_INDEX' });
+	      // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
+	      // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
+	      race.attemptRaceStep(rollDice(2));
 	    }
 	  }), document.getElementById('app'));
 	};
@@ -37465,6 +37468,36 @@
 	});
 	
 	module.exports = Chicken;
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(172);
+	var Race = function Race(store) {
+	  this.store = store;
+	};
+	
+	Race.prototype = {
+	  isEven: function isEven(n) {
+	    return n % 2 == 0;
+	  },
+	  stepSuccess: function stepSuccess(diceRoll) {
+	    return this.isEven(_.sum(diceRoll));
+	  },
+	  attemptRaceStep: function attemptRaceStep(diceRoll) {
+	    if (this.stepSuccess(diceRoll)) {
+	      this.store.dispatch({ type: 'INCREASE_RACING_CHICKEN_STEPS' });
+	    }
+	
+	    this.store.dispatch({ type: 'SHIFT_RACING_CHICKEN_INDEX' });
+	  }
+	
+	};
+	
+	module.exports = Race;
 
 /***/ }
 /******/ ]);

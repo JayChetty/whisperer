@@ -7,7 +7,9 @@ var Game = React.createClass({
     var racingChicken = this.props.game.chickens[this.props.game.racingChickenIndex];
     return(
       <div>
-        <RacingChickenBox racingChicken={racingChicken} onRaceChicken={this.props.onRaceChicken} ></RacingChickenBox>
+        <RacingChickenBox racingChicken={racingChicken} onRaceChicken={this.props.onRaceChicken} >
+
+        </RacingChickenBox>
         <DiceBox dice={this.props.game.dice}></DiceBox>
         <RaceBox game={this.props.game} ></RaceBox>
       </div>

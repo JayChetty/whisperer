@@ -4,7 +4,6 @@ var RacingChickingBox = React.createClass({
     return(
       <div>
         <h2> {this.props.racingChicken.name} </h2>
-
         <button onClick={this.props.onRaceChicken}> Go Chicken Go </button>
       </div>
     )

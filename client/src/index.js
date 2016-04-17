@@ -3,7 +3,8 @@ var ReactDOM = require('react-dom');
 var Game = require('./components/Game.jsx');
 var Redux = require('redux');
 var startState = require('./start_state');
-var Approach = require('./models/approach')
+var Approach = require('./models/approach');
+var Race = require('./models/race');
 var catchGameReducer = require('./reducers/catch_game_reducer.js');
 var _ = require('lodash');
 
@@ -13,6 +14,7 @@ var gameStore = Redux.createStore(catchGameReducer, startState,
 );
 
 var approach = new Approach(gameStore);
+var race = new Race(gameStore);
 
 var rollDice = function(numDice){
   var dice = []
@@ -45,8 +47,9 @@ var render = function(){
         approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
       }}
       onRaceChicken= { function(chicken){
-        gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
-        gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
+        // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
+        // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
+        race.attemptRaceStep(rollDice(2))
       }}
     >
     </Game>,
