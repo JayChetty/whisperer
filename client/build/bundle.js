@@ -37306,6 +37306,15 @@
 	      });
 	      var updatedApproach = Object.assign({}, state.currentApproach, { finished: true });
 	      return Object.assign({}, state, { chickens: chickensAfterSteal, currentApproach: updatedApproach });
+	    case "SHIFT_RACING_CHICKEN_INDEX":
+	      var racingChickenIndex = 0; //default to first chicken
+	      if (!_.isNull(state.racingChickenIndex)) {
+	        console.log('have state', state.racingChickenIndex);
+	        var racingChickenIndex = (state.racingChickenIndex + 1) % state.chickens.length;
+	      }
+	      console.log('index', racingChickenIndex);
+	      return Object.assign({}, state, { racingChickenIndex: racingChickenIndex });
+	
 	    default:
 	      return state;
 	  }

@@ -9,7 +9,8 @@ var startState = {
       speed:15,
       scare:1,
       startScare:1,
-      owner:null
+      owner:null,
+      raceSteps:0
     },
     {
       id:2,
@@ -17,15 +18,22 @@ var startState = {
       speed:5,
       scare:4,
       startScare:4,
-      owner:null
+      owner:null,
+      raceSteps:0
     }
   ],
   currentApproach:null,
+  racingChickenIndex:null,
 }
+
 
 var stateWithApproach = Object.assign( {}, startState, {currentApproach:{catcher: 1, steps: 0, finished:false}} )
 var stateWithFinishedApproach = Object.assign( {}, startState, {currentApproach:{catcher: 1, steps: 0, finished:true}} )
 var stateWithFinishedApproachLast = Object.assign( {}, startState, {currentApproach:{catcher: 2, steps: 0, finished:true}} )
+
+var stateInRace = Object.assign( {}, startState, {racingChickenIndex:0} );
+
+var stateLastChickenInRace = Object.assign( {}, startState, {racingChickenIndex:startState.chickens.length - 1} );
 
 Object.freeze(startState);
 Object.freeze(stateWithApproach);
@@ -79,7 +87,8 @@ describe("catch game reducer", function(){
         speed:15,
         scare:0,
         startScare:1,
-        owner:null
+        owner:null,
+        raceSteps:0
       },
       {
         id:2,
@@ -87,7 +96,8 @@ describe("catch game reducer", function(){
         speed:5,
         scare:3,
         startScare:4,
-        owner:null
+        owner:null,
+        raceSteps:0
       }
     ]
     expect(catchGame(stateWithApproach, action).chickens).to.deep.equal(scaredChickens);
@@ -103,7 +113,8 @@ describe("catch game reducer", function(){
         speed:15,
         scare:1,
         startScare:1,
-        owner:1
+        owner:1,
+        raceSteps:0
       },
       {
         id:2,
@@ -111,7 +122,8 @@ describe("catch game reducer", function(){
         speed:5,
         scare:4,
         startScare:4,
-        owner:null
+        owner:null,
+        raceSteps:0
       }
     ]
     expect(catchGame(stateWithApproach, action).chickens).to.deep.equal(chickensAfterSteal);
@@ -130,5 +142,26 @@ describe("catch game reducer", function(){
     }
     expect(catchGame(startState, action).dice).to.deep.equal([1,2,3]);
   });
+
+  it('should default to zero when shifting racing index ', function(){
+    var action = {
+      type:'SHIFT_RACING_CHICKEN_INDEX',
+    }
+    expect(catchGame(startState, action).racingChickenIndex).to.equal(0);
+  });
+
+  it('should shift to next chickens ', function(){
+    var action = {
+      type:'SHIFT_RACING_CHICKEN_INDEX',
+    }
+    expect(catchGame(stateInRace, action).racingChickenIndex).to.equal(1);
+  });
+  it('should loop index back to first chicken', function(){
+    var action = {
+      type:'SHIFT_RACING_CHICKEN_INDEX',
+    }
+    expect(catchGame(stateLastChickenInRace, action).racingChickenIndex).to.equal(0);
+  });
+
 
 })

@@ -4,7 +4,8 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack -w"
+    "start": "webpack -w",
+    "test": "mocha src/specs"
   },
   "author": "",
   "license": "ISC",
