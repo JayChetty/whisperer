@@ -42,8 +42,11 @@ var render = function(){
         approach.attemptStep(rollDice(2))
       }}
       onAttemptSteal = { function(chicken){
-        console.log('dispatching')
         approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
+      }}
+      onRaceChicken= { function(chicken){
+        gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
+        gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
       }}
     >
     </Game>,

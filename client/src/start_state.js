@@ -3,10 +3,11 @@ module.exports = {
   chickens:[
     { id:1,
       name:'QuickChick',
-      speed:15,
-      scare:1,
+      speed:6,
+      scare:3,
       startScare:1,
-      owner:null
+      owner:1,
+      raceSteps:0
     },
     {
       id:2,
@@ -14,9 +15,11 @@ module.exports = {
       speed:5,
       scare:4,
       startScare:4,
-      owner:null
+      owner:2,
+      raceSteps:0
     }
   ],
   currentApproach:null,
-  dice:[]
+  dice:[],
+  racingChickenIndex:0,
 }

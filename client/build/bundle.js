@@ -86,8 +86,11 @@
 	      approach.attemptStep(rollDice(2));
 	    },
 	    onAttemptSteal: function onAttemptSteal(chicken) {
-	      console.log('dispatching');
 	      approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken);
+	    },
+	    onRaceChicken: function onRaceChicken(chicken) {
+	      gameStore.dispatch({ type: 'INCREASE_RACING_CHICKEN_STEPS' });
+	      gameStore.dispatch({ type: 'SHIFT_RACING_CHICKEN_INDEX' });
 	    }
 	  }), document.getElementById('app'));
 	};
@@ -20061,19 +20064,31 @@
 	
 	var React = __webpack_require__(1);
 	var CatchGame = __webpack_require__(167);
+	var RaceGame = __webpack_require__(191);
 	var Game = React.createClass({
 	  displayName: 'Game',
 	
 	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(CatchGame, {
+	    var allChickensCaught = _.every(this.props.game.chickens, function (chicken) {
+	      return !!chicken.owner;
+	    });
+	    if (allChickensCaught) {
+	      var gameComponent = React.createElement(RaceGame, {
+	        game: this.props.game,
+	        onRaceChicken: this.props.onRaceChicken
+	      });
+	    } else {
+	      var gameComponent = React.createElement(CatchGame, {
 	        game: this.props.game,
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
 	        onAttemptSteal: this.props.onAttemptSteal
-	      })
+	      });
+	    }
+	    return React.createElement(
+	      'div',
+	      null,
+	      gameComponent
 	    );
 	  }
 	});
@@ -37190,20 +37205,23 @@
 	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Valerie' }],
 	  chickens: [{ id: 1,
 	    name: 'QuickChick',
-	    speed: 15,
-	    scare: 1,
+	    speed: 6,
+	    scare: 3,
 	    startScare: 1,
-	    owner: null
+	    owner: 1,
+	    raceSteps: 0
 	  }, {
 	    id: 2,
 	    name: 'SlowChick',
 	    speed: 5,
 	    scare: 4,
 	    startScare: 4,
-	    owner: null
+	    owner: 2,
+	    raceSteps: 0
 	  }],
 	  currentApproach: null,
-	  dice: []
+	  dice: [],
+	  racingChickenIndex: 0
 	};
 
 /***/ },
@@ -37327,6 +37345,126 @@
 	};
 	
 	module.exports = catchGameReducer;
+
+/***/ },
+/* 190 */,
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var RaceBox = __webpack_require__(192);
+	var RacingChickenBox = __webpack_require__(193);
+	var DiceBox = __webpack_require__(175);
+	var Game = React.createClass({
+	  displayName: 'Game',
+	
+	  render: function render() {
+	    var racingChicken = this.props.game.chickens[this.props.game.racingChickenIndex];
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(RacingChickenBox, { racingChicken: racingChicken, onRaceChicken: this.props.onRaceChicken }),
+	      React.createElement(DiceBox, { dice: this.props.game.dice }),
+	      React.createElement(RaceBox, { game: this.props.game })
+	    );
+	  }
+	});
+	
+	module.exports = Game;
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var RacingChicken = __webpack_require__(194);
+	var RaceBox = React.createClass({
+	  displayName: 'RaceBox',
+	
+	  render: function render() {
+	    var chickenListItems = this.props.game.chickens.map(function (chicken) {
+	      return React.createElement(RacingChicken, { chicken: chicken, key: chicken.id });
+	    });
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        ' Race Box '
+	      ),
+	      React.createElement(
+	        'ul',
+	        null,
+	        ' ',
+	        chickenListItems
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = RaceBox;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var RacingChickingBox = React.createClass({
+	  displayName: 'RacingChickingBox',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        ' ',
+	        this.props.racingChicken.name,
+	        ' '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.props.onRaceChicken },
+	        ' Go Chicken Go '
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = RacingChickingBox;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var Chicken = React.createClass({
+	  displayName: 'Chicken',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'li',
+	      null,
+	      this.props.chicken.name,
+	      'Speed: ',
+	      this.props.chicken.speed,
+	      'Steps: ',
+	      this.props.chicken.raceSteps
+	    );
+	  }
+	});
+	
+	module.exports = Chicken;
 
 /***/ }
 /******/ ]);
