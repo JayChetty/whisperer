@@ -37507,7 +37507,9 @@
 	      'Speed: ',
 	      this.props.chicken.speed,
 	      'Steps: ',
-	      this.props.chicken.raceSteps
+	      this.props.chicken.raceSteps,
+	      'Owner: ',
+	      this.props.chicken.owner
 	    );
 	  }
 	});

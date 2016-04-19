@@ -6,6 +6,7 @@ var Chicken = React.createClass({
         {this.props.chicken.name}
         Speed: {this.props.chicken.speed}
         Steps: {this.props.chicken.raceSteps}
+        Owner: {this.props.chicken.owner}
       </li>
     )
   }
