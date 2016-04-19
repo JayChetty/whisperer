@@ -2,7 +2,7 @@ var Race = require('../models/race');
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
-describe('approach', function(){
+describe('race', function(){
   it('should increase race step if even', function(){
     var mockGameStore = {
       dispatch:sinon.spy()

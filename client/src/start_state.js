@@ -3,19 +3,19 @@ module.exports = {
   chickens:[
     { id:1,
       name:'QuickChick',
-      speed:6,
+      speed:1,
       scare:3,
       startScare:1,
-      owner:1,
+      owner:null,
       raceSteps:0
     },
     {
       id:2,
       name:'SlowChick',
-      speed:5,
+      speed:2,
       scare:4,
       startScare:4,
-      owner:2,
+      owner:null,
       raceSteps:0
     }
   ],

@@ -174,7 +174,7 @@ describe("catch game reducer", function(){
         scare:1,
         startScare:1,
         owner:null,
-        raceSteps:1
+        raceSteps:15
       },
       {
         id:2,
@@ -187,6 +187,20 @@ describe("catch game reducer", function(){
       }
     ]
     expect(catchGame(stateInRace, action).chickens).to.deep.equal(chickensAfterRace);
+  });
+
+  it('should set approach as whisperer ', function(){
+    var action = {
+      type:'SET_WHISPERER_ON',
+    }
+    expect(catchGame(stateWithApproach, action).currentApproach.isWhisperer).to.equal(true);
+  });
+
+  it('should set approach as not whisperer ', function(){
+    var action = {
+      type:'SET_WHISPERER_OFF',
+    }
+    expect(catchGame(stateWithApproach, action).currentApproach.isWhisperer).to.equal(false);
   });
 
 })

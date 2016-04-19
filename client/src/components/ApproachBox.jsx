@@ -14,6 +14,7 @@ var ApproachBox = React.createClass({
         <div>
           <p> Catcher: {currentCatcher.name} </p>
           <p> Steps: {this.props.approach.steps} </p>
+          <p> Is Whisperer: {(!!this.props.approach.isWhisperer).toString()} </p>
           <button onClick ={ this.props.onStep }> Step </button>
         </div>
       )

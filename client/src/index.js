@@ -3,7 +3,11 @@ var ReactDOM = require('react-dom');
 var Game = require('./components/Game.jsx');
 var Redux = require('redux');
 var startState = require('./start_state');
+
 var Approach = require('./models/approach');
+var StandardChecker = require('./models/standard_checker');
+var WhispererChecker = require('./models/whisperer_checker');
+
 var Race = require('./models/race');
 var catchGameReducer = require('./reducers/catch_game_reducer.js');
 var _ = require('lodash');
@@ -15,6 +19,12 @@ var gameStore = Redux.createStore(catchGameReducer, startState,
 
 var approach = new Approach(gameStore);
 var race = new Race(gameStore);
+
+var createApproach = function(approachState){
+  var isWhisperer = approachState.isWhisperer;
+  var checker = isWhisperer ? new WhispererChecker() : new StandardChecker()
+  return new Approach(gameStore, checker, isWhisperer);
+}
 
 var rollDice = function(numDice){
   var dice = []
@@ -31,6 +41,10 @@ var rollDice = function(numDice){
 
 var _ = require('lodash');
 var render = function(){
+  var approachState = gameStore.getState().currentApproach
+  if(approachState){
+    var approach = createApproach(approachState)
+  }
   ReactDOM.render(
     <Game
       game={gameStore.getState()}
@@ -44,6 +58,7 @@ var render = function(){
         approach.attemptStep(rollDice(2))
       }}
       onAttemptSteal = { function(chicken){
+        console.log('chicken', chicken);
         approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
       }}
       onRaceChicken= { function(chicken){

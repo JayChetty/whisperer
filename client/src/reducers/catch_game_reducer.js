@@ -61,11 +61,17 @@ var catchGameReducer = function(state, action){
     case "INCREASE_RACING_CHICKEN_STEPS":
       var updatedChickens = state.chickens.map((chicken,index)=>{
         if(index === state.racingChickenIndex){
-          return Object.assign( {}, chicken, {raceSteps: chicken.raceSteps + 1}  )
+          return Object.assign( {}, chicken, {raceSteps: chicken.raceSteps + chicken.speed}  )
         }
         return Object.assign( {}, chicken )
       })
       return Object.assign( {}, state, {chickens: updatedChickens} );
+    case "SET_WHISPERER_ON":
+      var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: true})
+      return Object.assign( {}, state, {currentApproach:newApproach} )
+    case "SET_WHISPERER_OFF":
+      var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: false})
+      return Object.assign( {}, state, {currentApproach:newApproach} )
 
     default:
       return state
