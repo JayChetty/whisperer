@@ -18,7 +18,9 @@ var ApproachBox = React.createClass({
     if(this.props.approach && !this.props.approach.finished){
       approachBody = (
         <div className="panel-item-large panel panel-row box">
-          <ActionBox isWhisperer={!!this.props.approach.isWhisperer}>
+          <ActionBox
+            isWhisperer={!!this.props.approach.isWhisperer}
+            lastAction={this.props.approach.lastAction}>
           </ActionBox>
           <StepBox steps={this.props.approach.steps}></StepBox>
         </div>
@@ -33,7 +35,6 @@ var ApproachBox = React.createClass({
     return(
       <div className='panel column-panel panel-item-large box'>
         <CatchersBox
-          className="panel-item-small"
           catchers={this.props.catchers}
           currentCatcher={currentCatcher}
         ></CatchersBox>

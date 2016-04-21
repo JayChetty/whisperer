@@ -44,7 +44,7 @@ describe("catch game reducer", function(){
       type:'NEXT_APPROACH',
     }
     var expectedApproach = {catcher: 1, steps: 0}
-    expect(catchGame(startState, action).currentApproach).to.deep.equal({catcher: 1, steps: 0,finished:false} );
+    expect(catchGame(startState, action).currentApproach).to.deep.equal({catcher: 1, steps: 0,finished:false, lastAction:null} );
   });
   it('should not produce an approach if approach not finished', function(){
     var action = {
@@ -59,7 +59,7 @@ describe("catch game reducer", function(){
       type:'NEXT_APPROACH',
       catcher:2
     }
-    var expectedApproach = {catcher: 2, steps: 0, finished:false}
+    var expectedApproach = {catcher: 2, steps: 0, finished:false, lastAction:null}
     expect(catchGame(stateWithFinishedApproach, action).currentApproach).to.deep.equal(expectedApproach);
   });
   it('should cycle back to first user when last done', function(){
@@ -67,14 +67,14 @@ describe("catch game reducer", function(){
       type:'NEXT_APPROACH',
       catcher:2
     }
-    var expectedApproach = {catcher: 1, steps: 0, finished:false}
+    var expectedApproach = {catcher: 1, steps: 0, finished:false, lastAction:null}
     expect(catchGame(stateWithFinishedApproachLast, action).currentApproach).to.deep.equal(expectedApproach);
   });
   it('should be able to take step', function(){
     var action = {
       type:'APPROACH_STEP',
     }
-    var expectedApproach = {catcher: 1, steps: 1, finished:false}
+    var expectedApproach = {catcher: 1, steps: 1, finished:false, lastAction:"STEP"}
     expect(catchGame(stateWithApproach, action).currentApproach).to.deep.equal(expectedApproach);
   });
   it('should be able to scare chickens', function(){
