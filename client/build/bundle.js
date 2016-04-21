@@ -20128,19 +20128,19 @@
 	  displayName: 'CatchGame',
 	
 	  render: function render() {
-	    var _this = this;
-	
 	    //add chickens to catchers
-	    this.props.game.catchers.forEach(function (catcher) {
-	      var chickens = _.filter(_this.props.game.chickens, function (chicken) {
-	        return chicken.owner === catcher.id;
-	      });
-	      catcher.chickens = chickens;
-	    });
-	    var penChickens = _.filter(this.props.game.chickens, function (chicken) {
-	      return _.isNull(chicken.owner);
-	    });
-	    var catchableChickens = _.filter(penChickens, function (chicken) {
+	
+	    // this.props.game.catchers.forEach((catcher)=>{
+	    //   var chickens = _.filter(this.props.game.chickens, (chicken)=>{
+	    //     return(chicken.owner === catcher.id);
+	    //   })
+	    //   catcher.chickens = chickens;
+	    // })
+	
+	    // var penChickens = _.filter(this.props.game.chickens, (chicken)=>{
+	    //   return( _.isNull(chicken.owner));
+	    // })
+	    var catchableChickens = _.filter(this.props.game.chickens, function (chicken) {
 	      return chicken.scare > 0;
 	    });
 	    return React.createElement(
@@ -20232,14 +20232,29 @@
 	    this.props.onAttemptSteal(this.props.chicken);
 	  },
 	  render: function render() {
+	    var ownerBox = React.createElement('div', null);
+	    var attemptSteal = this.handleAttemptSteal;
+	    if (this.props.chicken.owner) {
+	      ownerBox = React.createElement(
+	        'div',
+	        { className: 'emphasise' },
+	        ' ( ',
+	        this.props.chicken.owner,
+	        ' )'
+	      );
+	      attemptSteal = function attemptSteal() {
+	        console.log('cannot steal stolen chickens');
+	      };
+	    }
 	    return React.createElement(
 	      'li',
-	      { onClick: this.handleAttemptSteal },
+	      { onClick: attemptSteal },
 	      this.props.chicken.name,
 	      'Speed: ',
 	      this.props.chicken.speed,
 	      'Scare: ',
-	      this.props.chicken.scare
+	      this.props.chicken.scare,
+	      ownerBox
 	    );
 	  }
 	});
