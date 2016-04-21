@@ -1,5 +1,6 @@
 .box{
   border-style: solid;
+  margin: -1px;
 }
 
 .panel{

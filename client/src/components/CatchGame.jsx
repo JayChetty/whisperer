@@ -5,14 +5,14 @@ var ChickenPen = require('./ChickenPen.jsx');
 
 var CatchGame = React.createClass({
   render:function(){
-    //add chickens to catchers
-
-    // this.props.game.catchers.forEach((catcher)=>{
-    //   var chickens = _.filter(this.props.game.chickens, (chicken)=>{
-    //     return(chicken.owner === catcher.id);
-    //   })
-    //   catcher.chickens = chickens;
-    // })
+    //add catcher to chicken
+    this.props.game.chickens.forEach((chicken)=>{
+      var ownerObject = _.find(this.props.game.catchers, (catcher)=>{
+        return catcher.id === chicken.owner
+      });
+      console.log('oo', ownerObject)
+      chicken.ownerObject = ownerObject
+    })
 
     // var penChickens = _.filter(this.props.game.chickens, (chicken)=>{
     //   return( _.isNull(chicken.owner));

@@ -8,7 +8,7 @@ var Chicken = React.createClass({
     var ownerBox = <div></div>
     var attemptSteal = this.handleAttemptSteal
     if(this.props.chicken.owner){
-      ownerBox = <div className="emphasise"> ( {this.props.chicken.owner} )</div>
+      ownerBox = <div className="emphasise"> ( {this.props.chicken.ownerObject.name} )</div>
       attemptSteal = function(){
         console.log('cannot steal stolen chickens')
       }
