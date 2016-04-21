@@ -14,9 +14,7 @@ Race.prototype = {
     if(this.stepSuccess(diceRoll)){
       this.store.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
     }
-
     this.store.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
-
   },
 
 }

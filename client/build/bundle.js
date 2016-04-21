@@ -49,15 +49,15 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var Game = __webpack_require__(166);
-	var Redux = __webpack_require__(176);
-	var startState = __webpack_require__(187);
+	var Redux = __webpack_require__(180);
+	var startState = __webpack_require__(191);
 	
-	var Approach = __webpack_require__(188);
-	var StandardChecker = __webpack_require__(196);
-	var WhispererChecker = __webpack_require__(197);
+	var Approach = __webpack_require__(192);
+	var StandardChecker = __webpack_require__(193);
+	var WhispererChecker = __webpack_require__(194);
 	
 	var Race = __webpack_require__(195);
-	var catchGameReducer = __webpack_require__(189);
+	var catchGameReducer = __webpack_require__(196);
 	var _ = __webpack_require__(172);
 	
 	var gameStore = Redux.createStore(catchGameReducer, startState, window.devToolsExtension ? window.devToolsExtension() : undefined);
@@ -20082,7 +20082,7 @@
 	
 	var React = __webpack_require__(1);
 	var CatchGame = __webpack_require__(167);
-	var RaceGame = __webpack_require__(191);
+	var RaceGame = __webpack_require__(176);
 	var Game = React.createClass({
 	  displayName: 'Game',
 	
@@ -20123,7 +20123,6 @@
 	var CatchersBox = __webpack_require__(168);
 	var ApproachBox = __webpack_require__(171);
 	var ChickenPen = __webpack_require__(174);
-	var DiceBox = __webpack_require__(175);
 	
 	var CatchGame = React.createClass({
 	  displayName: 'CatchGame',
@@ -20146,12 +20145,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      null,
-	      React.createElement(
-	        'h1',
-	        null,
-	        'Chicken Whisperer: Catching'
-	      ),
+	      { className: 'box' },
 	      React.createElement(
 	        CatchersBox,
 	        { catchers: this.props.game.catchers },
@@ -20161,13 +20155,13 @@
 	        approach: this.props.game.currentApproach,
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
-	        catchers: this.props.game.catchers
+	        catchers: this.props.game.catchers,
+	        dice: this.props.game.dice
 	      }),
 	      React.createElement(ChickenPen, {
 	        chickens: catchableChickens,
 	        onAttemptSteal: this.props.onAttemptSteal
-	      }),
-	      React.createElement(DiceBox, { dice: this.props.game.dice })
+	      })
 	    );
 	  }
 	});
@@ -20191,11 +20185,11 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'box' },
 	      React.createElement(
 	        'h2',
 	        null,
-	        'CatchersBox'
+	        ' CatchersBox '
 	      ),
 	      React.createElement(
 	        'ul',
@@ -20283,6 +20277,7 @@
 	
 	var React = __webpack_require__(1);
 	var _ = __webpack_require__(172);
+	var DiceBox = __webpack_require__(175);
 	var ApproachBox = React.createClass({
 	  displayName: 'ApproachBox',
 	
@@ -20329,7 +20324,8 @@
 	          'button',
 	          { onClick: this.props.onStep },
 	          ' Step '
-	        )
+	        ),
+	        React.createElement(DiceBox, { dice: this.props.dice })
 	      );
 	    }
 	    return React.createElement(
@@ -36474,32 +36470,153 @@
 /* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var RaceBox = __webpack_require__(177);
+	var RacingChickenBox = __webpack_require__(179);
+	var DiceBox = __webpack_require__(175);
+	var Game = React.createClass({
+	  displayName: 'Game',
+	
+	  render: function render() {
+	    var racingChicken = this.props.game.chickens[this.props.game.racingChickenIndex];
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(RacingChickenBox, { racingChicken: racingChicken, onRaceChicken: this.props.onRaceChicken }),
+	      React.createElement(DiceBox, { dice: this.props.game.dice }),
+	      React.createElement(RaceBox, { game: this.props.game })
+	    );
+	  }
+	});
+	
+	module.exports = Game;
+
+/***/ },
+/* 177 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var RacingChicken = __webpack_require__(178);
+	var RaceBox = React.createClass({
+	  displayName: 'RaceBox',
+	
+	  render: function render() {
+	    var chickenListItems = this.props.game.chickens.map(function (chicken) {
+	      return React.createElement(RacingChicken, { chicken: chicken, key: chicken.id });
+	    });
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        ' Race Box '
+	      ),
+	      React.createElement(
+	        'ul',
+	        null,
+	        ' ',
+	        chickenListItems
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = RaceBox;
+
+/***/ },
+/* 178 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var Chicken = React.createClass({
+	  displayName: 'Chicken',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'li',
+	      null,
+	      this.props.chicken.name,
+	      'Speed: ',
+	      this.props.chicken.speed,
+	      'Steps: ',
+	      this.props.chicken.raceSteps,
+	      'Owner: ',
+	      this.props.chicken.owner
+	    );
+	  }
+	});
+	
+	module.exports = Chicken;
+
+/***/ },
+/* 179 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var RacingChickingBox = React.createClass({
+	  displayName: 'RacingChickingBox',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h2',
+	        null,
+	        ' ',
+	        this.props.racingChicken.name,
+	        ' '
+	      ),
+	      React.createElement(
+	        'button',
+	        { onClick: this.props.onRaceChicken },
+	        ' Go Chicken Go '
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = RacingChickingBox;
+
+/***/ },
+/* 180 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 	
-	var _createStore = __webpack_require__(177);
+	var _createStore = __webpack_require__(181);
 	
 	var _createStore2 = _interopRequireDefault(_createStore);
 	
-	var _combineReducers = __webpack_require__(182);
+	var _combineReducers = __webpack_require__(186);
 	
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 	
-	var _bindActionCreators = __webpack_require__(184);
+	var _bindActionCreators = __webpack_require__(188);
 	
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 	
-	var _applyMiddleware = __webpack_require__(185);
+	var _applyMiddleware = __webpack_require__(189);
 	
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 	
-	var _compose = __webpack_require__(186);
+	var _compose = __webpack_require__(190);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
-	var _warning = __webpack_require__(183);
+	var _warning = __webpack_require__(187);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -36523,7 +36640,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -36532,7 +36649,7 @@
 	exports.ActionTypes = undefined;
 	exports["default"] = createStore;
 	
-	var _isPlainObject = __webpack_require__(178);
+	var _isPlainObject = __webpack_require__(182);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
@@ -36744,12 +36861,12 @@
 	}
 
 /***/ },
-/* 178 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getPrototype = __webpack_require__(179),
-	    isHostObject = __webpack_require__(180),
-	    isObjectLike = __webpack_require__(181);
+	var getPrototype = __webpack_require__(183),
+	    isHostObject = __webpack_require__(184),
+	    isObjectLike = __webpack_require__(185);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -36820,7 +36937,7 @@
 
 
 /***/ },
-/* 179 */
+/* 183 */
 /***/ function(module, exports) {
 
 	/* Built-in method references for those with the same name as other `lodash` methods. */
@@ -36841,7 +36958,7 @@
 
 
 /***/ },
-/* 180 */
+/* 184 */
 /***/ function(module, exports) {
 
 	/**
@@ -36867,7 +36984,7 @@
 
 
 /***/ },
-/* 181 */
+/* 185 */
 /***/ function(module, exports) {
 
 	/**
@@ -36902,7 +37019,7 @@
 
 
 /***/ },
-/* 182 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -36910,13 +37027,13 @@
 	exports.__esModule = true;
 	exports["default"] = combineReducers;
 	
-	var _createStore = __webpack_require__(177);
+	var _createStore = __webpack_require__(181);
 	
-	var _isPlainObject = __webpack_require__(178);
+	var _isPlainObject = __webpack_require__(182);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(183);
+	var _warning = __webpack_require__(187);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -37035,7 +37152,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 183 */
+/* 187 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37064,7 +37181,7 @@
 	}
 
 /***/ },
-/* 184 */
+/* 188 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37120,7 +37237,7 @@
 	}
 
 /***/ },
-/* 185 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37131,7 +37248,7 @@
 	
 	exports["default"] = applyMiddleware;
 	
-	var _compose = __webpack_require__(186);
+	var _compose = __webpack_require__(190);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
@@ -37183,7 +37300,7 @@
 	}
 
 /***/ },
-/* 186 */
+/* 190 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -37221,7 +37338,7 @@
 	}
 
 /***/ },
-/* 187 */
+/* 191 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37250,7 +37367,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37304,13 +37421,97 @@
 	module.exports = Approach;
 
 /***/ },
-/* 189 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var _ = __webpack_require__(172);
-	var startState = __webpack_require__(187);
+	var StandardChecker = function StandardChecker() {
+	  this.speedMultiplier = 6;
+	};
+	
+	StandardChecker.prototype = {
+	  isEven: function isEven(n) {
+	    return n % 2 == 0;
+	  },
+	  shouldStep: function shouldStep(diceRoll) {
+	    return this.isEven(_.sum(diceRoll));
+	  },
+	  shouldSteal: function shouldSteal(diceRoll, chicken) {
+	    return _.sum(diceRoll) >= chicken.speed * this.speedMultiplier;
+	  }
+	
+	};
+	
+	module.exports = StandardChecker;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(172);
+	var WhispererChecker = function WhispererChecker() {
+	  this.speedMultiplier = 6;
+	};
+	
+	WhispererChecker.prototype = {
+	  isEven: function isEven(n) {
+	    return n % 2 == 0;
+	  },
+	  shouldStep: function shouldStep(diceRoll) {
+	    var includesOne = _.some(diceRoll, function (number) {
+	      return number === 1;
+	    });
+	    return !includesOne;
+	  },
+	  shouldSteal: function shouldSteal(diceRoll, chicken) {
+	    return _.sum(diceRoll) >= chicken.speed * this.speedMultiplier;
+	  }
+	
+	};
+	
+	module.exports = WhispererChecker;
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(172);
+	var Race = function Race(store) {
+	  this.store = store;
+	};
+	
+	Race.prototype = {
+	  isEven: function isEven(n) {
+	    return n % 2 == 0;
+	  },
+	  stepSuccess: function stepSuccess(diceRoll) {
+	    return this.isEven(_.sum(diceRoll));
+	  },
+	  attemptRaceStep: function attemptRaceStep(diceRoll) {
+	    if (this.stepSuccess(diceRoll)) {
+	      this.store.dispatch({ type: 'INCREASE_RACING_CHICKEN_STEPS' });
+	    }
+	    this.store.dispatch({ type: 'SHIFT_RACING_CHICKEN_INDEX' });
+	  }
+	
+	};
+	
+	module.exports = Race;
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(172);
+	var startState = __webpack_require__(191);
 	
 	var catchGameReducer = function catchGameReducer(state, action) {
 	  switch (action.type) {
@@ -37393,213 +37594,6 @@
 	};
 	
 	module.exports = catchGameReducer;
-
-/***/ },
-/* 190 */,
-/* 191 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var RaceBox = __webpack_require__(192);
-	var RacingChickenBox = __webpack_require__(193);
-	var DiceBox = __webpack_require__(175);
-	var Game = React.createClass({
-	  displayName: 'Game',
-	
-	  render: function render() {
-	    var racingChicken = this.props.game.chickens[this.props.game.racingChickenIndex];
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(RacingChickenBox, { racingChicken: racingChicken, onRaceChicken: this.props.onRaceChicken }),
-	      React.createElement(DiceBox, { dice: this.props.game.dice }),
-	      React.createElement(RaceBox, { game: this.props.game })
-	    );
-	  }
-	});
-	
-	module.exports = Game;
-
-/***/ },
-/* 192 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var RacingChicken = __webpack_require__(194);
-	var RaceBox = React.createClass({
-	  displayName: 'RaceBox',
-	
-	  render: function render() {
-	    var chickenListItems = this.props.game.chickens.map(function (chicken) {
-	      return React.createElement(RacingChicken, { chicken: chicken, key: chicken.id });
-	    });
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        ' Race Box '
-	      ),
-	      React.createElement(
-	        'ul',
-	        null,
-	        ' ',
-	        chickenListItems
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = RaceBox;
-
-/***/ },
-/* 193 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var RacingChickingBox = React.createClass({
-	  displayName: 'RacingChickingBox',
-	
-	  render: function render() {
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        ' ',
-	        this.props.racingChicken.name,
-	        ' '
-	      ),
-	      React.createElement(
-	        'button',
-	        { onClick: this.props.onRaceChicken },
-	        ' Go Chicken Go '
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = RacingChickingBox;
-
-/***/ },
-/* 194 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var Chicken = React.createClass({
-	  displayName: 'Chicken',
-	
-	  render: function render() {
-	    return React.createElement(
-	      'li',
-	      null,
-	      this.props.chicken.name,
-	      'Speed: ',
-	      this.props.chicken.speed,
-	      'Steps: ',
-	      this.props.chicken.raceSteps,
-	      'Owner: ',
-	      this.props.chicken.owner
-	    );
-	  }
-	});
-	
-	module.exports = Chicken;
-
-/***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _ = __webpack_require__(172);
-	var Race = function Race(store) {
-	  this.store = store;
-	};
-	
-	Race.prototype = {
-	  isEven: function isEven(n) {
-	    return n % 2 == 0;
-	  },
-	  stepSuccess: function stepSuccess(diceRoll) {
-	    return this.isEven(_.sum(diceRoll));
-	  },
-	  attemptRaceStep: function attemptRaceStep(diceRoll) {
-	    if (this.stepSuccess(diceRoll)) {
-	      this.store.dispatch({ type: 'INCREASE_RACING_CHICKEN_STEPS' });
-	    }
-	
-	    this.store.dispatch({ type: 'SHIFT_RACING_CHICKEN_INDEX' });
-	  }
-	
-	};
-	
-	module.exports = Race;
-
-/***/ },
-/* 196 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _ = __webpack_require__(172);
-	var StandardChecker = function StandardChecker() {
-	  this.speedMultiplier = 6;
-	};
-	
-	StandardChecker.prototype = {
-	  isEven: function isEven(n) {
-	    return n % 2 == 0;
-	  },
-	  shouldStep: function shouldStep(diceRoll) {
-	    return this.isEven(_.sum(diceRoll));
-	  },
-	  shouldSteal: function shouldSteal(diceRoll, chicken) {
-	    return _.sum(diceRoll) >= chicken.speed * this.speedMultiplier;
-	  }
-	
-	};
-	
-	module.exports = StandardChecker;
-
-/***/ },
-/* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _ = __webpack_require__(172);
-	var WhispererChecker = function WhispererChecker() {
-	  this.speedMultiplier = 6;
-	};
-	
-	WhispererChecker.prototype = {
-	  isEven: function isEven(n) {
-	    return n % 2 == 0;
-	  },
-	  shouldStep: function shouldStep(diceRoll) {
-	    var includesOne = _.some(diceRoll, function (number) {
-	      return number === 1;
-	    });
-	    return !includesOne;
-	  },
-	  shouldSteal: function shouldSteal(diceRoll, chicken) {
-	    return _.sum(diceRoll) >= chicken.speed * this.speedMultiplier;
-	  }
-	
-	};
-	
-	module.exports = WhispererChecker;
 
 /***/ }
 /******/ ]);

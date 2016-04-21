@@ -2,7 +2,7 @@ var React = require('react');
 var CatchersBox = require('./CatchersBox.jsx');
 var ApproachBox = require('./ApproachBox.jsx');
 var ChickenPen = require('./ChickenPen.jsx');
-var DiceBox = require('./DiceBox.jsx');
+
 
 var CatchGame = React.createClass({
   render:function(){
@@ -20,14 +20,14 @@ var CatchGame = React.createClass({
       return(chicken.scare > 0);
     })
     return(
-      <div>
-        <h1>Chicken Whisperer: Catching</h1>
+      <div className='box'>
         <CatchersBox catchers={this.props.game.catchers}> </CatchersBox>
         <ApproachBox
           approach={this.props.game.currentApproach}
           onNextApproach={this.props.onNextApproach}
           onStep = {this.props.onStep}
           catchers = {this.props.game.catchers}
+          dice = {this.props.game.dice}
         >
         </ApproachBox>
         <ChickenPen
@@ -35,7 +35,7 @@ var CatchGame = React.createClass({
           onAttemptSteal = {this.props.onAttemptSteal}
         >
         </ChickenPen>
-        <DiceBox dice={this.props.game.dice}></DiceBox>
+
       </div>
     )
   }

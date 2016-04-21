@@ -6,8 +6,8 @@ var CatchersBox = React.createClass({
       return <Catcher key={catcher.id} catcher={catcher}></Catcher>
     })
     return(
-      <div>
-        <h2>CatchersBox</h2>
+      <div className='box'>
+        <h2> CatchersBox </h2>
         <ul> {catcherListItems}</ul>
       </div>
     )
