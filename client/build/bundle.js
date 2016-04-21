@@ -20247,8 +20247,8 @@
 	      };
 	    }
 	    return React.createElement(
-	      'li',
-	      { onClick: attemptSteal },
+	      'div',
+	      null,
 	      this.props.chicken.name,
 	      'Speed: ',
 	      this.props.chicken.speed,
@@ -36393,13 +36393,8 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'panel-item-small box' },
-	      React.createElement(
-	        'ul',
-	        null,
-	        ' ',
-	        chickenListItems
-	      )
+	      { className: 'panel column-panel panel-item-small box' },
+	      chickenListItems
 	    );
 	  }
 	});
@@ -36410,26 +36405,23 @@
 /* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
 	var DiceBox = React.createClass({
-	  displayName: 'DiceBox',
+	  displayName: "DiceBox",
 	
 	  render: function render() {
-	    var diceView = React.createElement('p', null);
 	    if (this.props.dice) {
-	      diceView = React.createElement(
-	        'p',
-	        null,
-	        ' ',
-	        this.props.dice.toString()
-	      );
+	      var diceImages = this.props.dice.map(function (num) {
+	        var imageString = "images/die_face_" + num + ".png";
+	        return React.createElement("img", { src: imageString, height: "20", width: "20" });
+	      });
 	    }
 	    return React.createElement(
-	      'div',
+	      "div",
 	      null,
-	      diceView
+	      diceImages
 	    );
 	  }
 	});

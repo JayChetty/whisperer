@@ -1,13 +1,15 @@
 var React = require('react');
 var DiceBox = React.createClass({
   render:function(){
-    var diceView = <p></p>
     if(this.props.dice){
-      diceView = <p> {this.props.dice.toString()}</p>
+      var diceImages = this.props.dice.map((num)=>{
+        var imageString = `images/die_face_${num}.png`
+        return <img src={imageString} height="20" width="20"></img>
+      })
     }
     return(
       <div>
-        { diceView }
+        { diceImages }
       </div>
     )
   }

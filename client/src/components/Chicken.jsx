@@ -14,12 +14,12 @@ var Chicken = React.createClass({
       }
     }
     return(
-      <li onClick={attemptSteal} >
+      <div >
         {this.props.chicken.name}
         Speed: {this.props.chicken.speed}
         Scare: {this.props.chicken.scare}
         {ownerBox}
-      </li>
+      </div>
     )
   }
 });
