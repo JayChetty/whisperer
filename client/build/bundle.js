@@ -20120,7 +20120,7 @@
 	'use strict';
 	
 	var React = __webpack_require__(1);
-	var CatchersBox = __webpack_require__(168);
+	
 	var ApproachBox = __webpack_require__(171);
 	var ChickenPen = __webpack_require__(174);
 	
@@ -20145,12 +20145,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'box' },
-	      React.createElement(
-	        CatchersBox,
-	        { catchers: this.props.game.catchers },
-	        ' '
-	      ),
+	      { className: 'catch-game-box' },
 	      React.createElement(ApproachBox, {
 	        approach: this.props.game.currentApproach,
 	        onNextApproach: this.props.onNextApproach,
@@ -20180,23 +20175,19 @@
 	  displayName: 'CatchersBox',
 	
 	  render: function render() {
-	    var catcherListItems = this.props.catchers.map(function (catcher) {
-	      return React.createElement(Catcher, { key: catcher.id, catcher: catcher });
+	    var _this = this;
+	
+	    var catcherItems = this.props.catchers.map(function (catcher) {
+	      var isCurrentCatcher = catcher.id === _this.props.currentCatcher;
+	      return React.createElement(Catcher, {
+	        key: catcher.id,
+	        catcher: catcher,
+	        isCurrentCatcher: isCurrentCatcher });
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'box' },
-	      React.createElement(
-	        'h2',
-	        null,
-	        ' CatchersBox '
-	      ),
-	      React.createElement(
-	        'ul',
-	        null,
-	        ' ',
-	        catcherListItems
-	      )
+	      { className: 'box catchers-box' },
+	      catcherItems
 	    );
 	  }
 	});
@@ -20207,33 +20198,19 @@
 /* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
-	var Chicken = __webpack_require__(170);
 	var Catcher = React.createClass({
-	  displayName: 'Catcher',
+	  displayName: "Catcher",
 	
 	  render: function render() {
-	    var attemptSteal = function attemptSteal() {
-	      window.alert('cannot steal chickens from each other.... yet');
-	    };
-	    var chickenListItems = this.props.catcher.chickens.map(function (chicken) {
-	      return React.createElement(Chicken, { chicken: chicken, key: chicken.id, onAttemptSteal: attemptSteal });
-	    });
+	    var classes = "catcher";
+	    if (this.props.isCurrentCatcher) classes += " current-catcher";
 	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(
-	        'li',
-	        null,
-	        this.props.catcher.name,
-	        React.createElement(
-	          'ul',
-	          null,
-	          chickenListItems
-	        )
-	      )
+	      "div",
+	      { className: classes },
+	      this.props.catcher.name
 	    );
 	  }
 	});
@@ -20278,6 +20255,10 @@
 	var React = __webpack_require__(1);
 	var _ = __webpack_require__(172);
 	var DiceBox = __webpack_require__(175);
+	var StepBox = __webpack_require__(198);
+	var CatchersBox = __webpack_require__(168);
+	var ActionBox = __webpack_require__(197);
+	
 	var ApproachBox = React.createClass({
 	  displayName: 'ApproachBox',
 	
@@ -20285,41 +20266,24 @@
 	    this.props.onNextApproach();
 	  },
 	  render: function render() {
-	    var _this = this;
-	
-	    var approachEl = React.createElement(
+	    var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
+	    var approachBody = React.createElement(
 	      'button',
 	      { onClick: this.handleNextApproach },
 	      ' Next Player Start Approach'
 	    );
+	    var approachFooter = React.createElement('div', { className: 'approach-footer' });
+	
 	    if (this.props.approach && !this.props.approach.finished) {
-	      var currentCatcher = _.find(this.props.catchers, function (catcher) {
-	        return catcher.id === _this.props.approach.catcher;
-	      });
-	      approachEl = React.createElement(
+	      approachBody = React.createElement(
 	        'div',
-	        null,
-	        React.createElement(
-	          'p',
-	          null,
-	          ' Catcher: ',
-	          currentCatcher.name,
-	          ' '
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          ' Steps: ',
-	          this.props.approach.steps,
-	          ' '
-	        ),
-	        React.createElement(
-	          'p',
-	          null,
-	          ' Is Whisperer: ',
-	          (!!this.props.approach.isWhisperer).toString(),
-	          ' '
-	        ),
+	        { className: 'approach-body panel panel-row' },
+	        React.createElement(ActionBox, { isWhisperer: !!this.props.approach.isWhisperer }),
+	        React.createElement(StepBox, { steps: this.props.approach.steps })
+	      );
+	      approachFooter = React.createElement(
+	        'div',
+	        { className: 'approach-footer panel panel-row' },
 	        React.createElement(
 	          'button',
 	          { onClick: this.props.onStep },
@@ -20330,13 +20294,14 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        'ApproachBox'
-	      ),
-	      approachEl
+	      { className: 'box approach-box' },
+	      React.createElement(CatchersBox, {
+	        className: 'panel-head',
+	        catchers: this.props.catchers,
+	        currentCatcher: currentCatcher
+	      }),
+	      approachBody,
+	      approachFooter
 	    );
 	  }
 	});
@@ -36413,12 +36378,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        'ChickenPen'
-	      ),
+	      { className: 'box chicken-box' },
 	      React.createElement(
 	        'ul',
 	        null,
@@ -36454,11 +36414,6 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(
-	        'h2',
-	        null,
-	        ' DiceBox '
-	      ),
 	      diceView
 	    );
 	  }
@@ -37594,6 +37549,58 @@
 	};
 	
 	module.exports = catchGameReducer;
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var ActionBox = React.createClass({
+	  displayName: 'ActionBox',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      { className: 'action-box' },
+	      React.createElement(
+	        'h4',
+	        null,
+	        ' What just happened'
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = ActionBox;
+
+/***/ },
+/* 198 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var React = __webpack_require__(1);
+	var StepBox = React.createClass({
+	  displayName: 'StepBox',
+	
+	  render: function render() {
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'p',
+	        null,
+	        ' Steps: ',
+	        this.props.steps,
+	        ' '
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = StepBox;
 
 /***/ }
 /******/ ]);

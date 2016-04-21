@@ -1,30 +1,44 @@
 var React = require('react');
 var _ = require('lodash');
 var DiceBox = require('./DiceBox.jsx');
+var StepBox = require('./StepBox.jsx');
+var CatchersBox = require('./CatchersBox.jsx');
+var ActionBox = require('./ActionBox.jsx');
+
 var ApproachBox = React.createClass({
   handleNextApproach:function(){
     this.props.onNextApproach();
   },
   render:function(){
-    var approachEl = <button onClick={this.handleNextApproach}> Next Player Start Approach</button>
+    var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
+    var approachBody =
+      <button onClick={this.handleNextApproach}> Next Player Start Approach</button>
+    var approachFooter = <div className="approach-footer"></div>
+
     if(this.props.approach && !this.props.approach.finished){
-      var currentCatcher = _.find(this.props.catchers, (catcher)=>{
-        return catcher.id === this.props.approach.catcher
-      })
-      approachEl = (
-        <div>
-          <p> Catcher: {currentCatcher.name} </p>
-          <p> Steps: {this.props.approach.steps} </p>
-          <p> Is Whisperer: {(!!this.props.approach.isWhisperer).toString()} </p>
+      approachBody = (
+        <div className="approach-body panel panel-row">
+          <ActionBox isWhisperer={!!this.props.approach.isWhisperer}>
+          </ActionBox>
+          <StepBox steps={this.props.approach.steps}></StepBox>
+        </div>
+      )
+      approachFooter = (
+        <div className="approach-footer panel panel-row">
           <button onClick ={ this.props.onStep }> Step </button>
           <DiceBox dice={this.props.dice}></DiceBox>
         </div>
       )
     }
     return(
-      <div>
-        <h2>ApproachBox</h2>
-        { approachEl }
+      <div className='box approach-box'>
+        <CatchersBox
+          className="panel-head"
+          catchers={this.props.catchers}
+          currentCatcher={currentCatcher}
+        ></CatchersBox>
+        { approachBody }
+        { approachFooter }
       </div>
     )
   }

@@ -7,7 +7,6 @@ var DiceBox = React.createClass({
     }
     return(
       <div>
-        <h2> DiceBox </h2>
         { diceView }
       </div>
     )

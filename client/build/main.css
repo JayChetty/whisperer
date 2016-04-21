@@ -1,3 +1,70 @@
 .box{
-  border-style: solid
+  border-style: solid;
+  /*padding:5px;*/
+}
+
+.catch-game-box{
+  display: flex;
+  flex-direction:row;
+  justify-content: space-around;
+}
+
+/*.panel{
+  display: flex;
+}
+
+.row-panel{
+  flex-direction:row;
+}
+
+.column-panel{
+  flex-direction:column;;
+}*/
+.panel{
+  display: flex;
+  justify-content: space-around;
+}
+
+.row-panel{
+  flex-direction: row;
+}
+
+.column-panel{
+  flex-direction: column;
+}
+
+
+
+.approach-box{
+  flex-grow:3;
+  display: flex;
+  flex-direction: column;
+}
+
+.approach-head{
+  flex-grow:1;
+}
+
+.approach-body{
+  flex-grow:4;
+}
+
+.approach-footer{
+  flex-grow:1;
+}
+
+.catchers-box{
+  /*flex-grow:1;*/
+  display: flex;
+  flex-direction:row;
+  justify-content: space-around;
+}
+
+
+.chicken-box{
+  flex-grow:1;
+}
+
+.current-catcher{
+  font-weight: bold;
 }
