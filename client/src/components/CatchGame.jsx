@@ -19,7 +19,7 @@ var CatchGame = React.createClass({
       return(chicken.scare > 0);
     })
     return(
-      <div className='catch-game-box'>
+      <div className='panel'>
         <ApproachBox
           approach={this.props.game.currentApproach}
           onNextApproach={this.props.onNextApproach}

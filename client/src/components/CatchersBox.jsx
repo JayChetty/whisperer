@@ -11,7 +11,7 @@ var CatchersBox = React.createClass({
       </Catcher>
     })
     return(
-      <div className='box catchers-box'>
+      <div className='box panel'>
         {catcherItems}
       </div>
     )

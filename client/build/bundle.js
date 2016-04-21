@@ -20145,7 +20145,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'catch-game-box' },
+	      { className: 'panel' },
 	      React.createElement(ApproachBox, {
 	        approach: this.props.game.currentApproach,
 	        onNextApproach: this.props.onNextApproach,
@@ -20186,7 +20186,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'box catchers-box' },
+	      { className: 'box panel' },
 	      catcherItems
 	    );
 	  }
@@ -20205,8 +20205,8 @@
 	  displayName: "Catcher",
 	
 	  render: function render() {
-	    var classes = "catcher";
-	    if (this.props.isCurrentCatcher) classes += " current-catcher";
+	    var classes = "";
+	    if (this.props.isCurrentCatcher) classes += " emphasise";
 	    return React.createElement(
 	      "div",
 	      { className: classes },
@@ -20272,18 +20272,18 @@
 	      { onClick: this.handleNextApproach },
 	      ' Next Player Start Approach'
 	    );
-	    var approachFooter = React.createElement('div', { className: 'approach-footer' });
+	    var approachFooter = React.createElement('div', { className: 'panel-item-small' });
 	
 	    if (this.props.approach && !this.props.approach.finished) {
 	      approachBody = React.createElement(
 	        'div',
-	        { className: 'approach-body panel panel-row' },
+	        { className: 'panel-item-large panel panel-row box' },
 	        React.createElement(ActionBox, { isWhisperer: !!this.props.approach.isWhisperer }),
 	        React.createElement(StepBox, { steps: this.props.approach.steps })
 	      );
 	      approachFooter = React.createElement(
 	        'div',
-	        { className: 'approach-footer panel panel-row' },
+	        { className: 'panel-item-small panel panel-row box' },
 	        React.createElement(
 	          'button',
 	          { onClick: this.props.onStep },
@@ -20294,9 +20294,9 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: 'box approach-box' },
+	      { className: 'panel column-panel panel-item-large box' },
 	      React.createElement(CatchersBox, {
-	        className: 'panel-head',
+	        className: 'panel-item-small',
 	        catchers: this.props.catchers,
 	        currentCatcher: currentCatcher
 	      }),
@@ -36378,7 +36378,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'box chicken-box' },
+	      { className: 'panel-item-small box' },
 	      React.createElement(
 	        'ul',
 	        null,

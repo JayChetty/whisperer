@@ -13,27 +13,27 @@ var ApproachBox = React.createClass({
     var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
     var approachBody =
       <button onClick={this.handleNextApproach}> Next Player Start Approach</button>
-    var approachFooter = <div className="approach-footer"></div>
+    var approachFooter = <div className="panel-item-small"></div>
 
     if(this.props.approach && !this.props.approach.finished){
       approachBody = (
-        <div className="approach-body panel panel-row">
+        <div className="panel-item-large panel panel-row box">
           <ActionBox isWhisperer={!!this.props.approach.isWhisperer}>
           </ActionBox>
           <StepBox steps={this.props.approach.steps}></StepBox>
         </div>
       )
       approachFooter = (
-        <div className="approach-footer panel panel-row">
+        <div className="panel-item-small panel panel-row box">
           <button onClick ={ this.props.onStep }> Step </button>
           <DiceBox dice={this.props.dice}></DiceBox>
         </div>
       )
     }
     return(
-      <div className='box approach-box'>
+      <div className='panel column-panel panel-item-large box'>
         <CatchersBox
-          className="panel-head"
+          className="panel-item-small"
           catchers={this.props.catchers}
           currentCatcher={currentCatcher}
         ></CatchersBox>

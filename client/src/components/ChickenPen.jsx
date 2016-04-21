@@ -10,7 +10,7 @@ var ChickenPen = React.createClass({
       )
     })
     return(
-      <div className='box chicken-box'>
+      <div className='panel-item-small box'>
         <ul> {chickenListItems}</ul>
       </div>
     )
