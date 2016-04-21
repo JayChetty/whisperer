@@ -19,7 +19,7 @@ module.exports = {
       raceSteps:0
     }
   ],
-  currentApproach:null,
+  currentApproach:{catcher: 2, steps: 0, finished:true, lastAction:null},
   dice:[],
   racingChickenIndex:0,
 }

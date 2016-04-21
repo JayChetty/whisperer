@@ -20282,33 +20282,20 @@
 	  },
 	  render: function render() {
 	    var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
-	    var approachBody = React.createElement(
+	    var button = React.createElement(
 	      'button',
 	      { onClick: this.handleNextApproach },
 	      ' Next Player Start Approach'
 	    );
-	    var approachFooter = React.createElement('div', { className: 'panel-item-small' });
 	
 	    if (this.props.approach && !this.props.approach.finished) {
-	      approachBody = React.createElement(
-	        'div',
-	        { className: 'panel-item-large panel panel-row box' },
-	        React.createElement(ActionBox, {
-	          isWhisperer: !!this.props.approach.isWhisperer,
-	          lastAction: this.props.approach.lastAction }),
-	        React.createElement(StepBox, { steps: this.props.approach.steps })
-	      );
-	      approachFooter = React.createElement(
-	        'div',
-	        { className: 'panel-item-small panel panel-row box' },
-	        React.createElement(
-	          'button',
-	          { onClick: this.props.onStep },
-	          ' Step '
-	        ),
-	        React.createElement(DiceBox, { dice: this.props.dice })
+	      var button = React.createElement(
+	        'button',
+	        { onClick: this.props.onStep },
+	        ' Step '
 	      );
 	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'panel column-panel panel-item-large box' },
@@ -20316,8 +20303,20 @@
 	        catchers: this.props.catchers,
 	        currentCatcher: currentCatcher
 	      }),
-	      approachBody,
-	      approachFooter
+	      React.createElement(
+	        'div',
+	        { className: 'panel-item-large panel panel-row box' },
+	        React.createElement(ActionBox, {
+	          isWhisperer: !!this.props.approach.isWhisperer,
+	          lastAction: this.props.approach.lastAction }),
+	        React.createElement(StepBox, { steps: this.props.approach.steps })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'panel-item-small panel panel-row box' },
+	        button,
+	        React.createElement(DiceBox, { dice: this.props.dice })
+	      )
 	    );
 	  }
 	});
@@ -37332,7 +37331,7 @@
 	    owner: null,
 	    raceSteps: 0
 	  }],
-	  currentApproach: null,
+	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
 	  dice: [],
 	  racingChickenIndex: 0
 	};
