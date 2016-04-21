@@ -20248,7 +20248,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      null,
+	      { onClick: this.handleAttemptSteal },
 	      this.props.chicken.name,
 	      'Speed: ',
 	      this.props.chicken.speed,

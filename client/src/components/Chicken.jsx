@@ -14,7 +14,7 @@ var Chicken = React.createClass({
       }
     }
     return(
-      <div >
+      <div onClick={this.handleAttemptSteal} >
         {this.props.chicken.name}
         Speed: {this.props.chicken.speed}
         Scare: {this.props.chicken.scare}
