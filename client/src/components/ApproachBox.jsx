@@ -18,18 +18,18 @@ var ApproachBox = React.createClass({
     }
 
     return(
-      <div className='panel column-panel panel-item-large box'>
+      <div className='panel column-panel panel-item-large '>
         <CatchersBox
           catchers={this.props.catchers}
           currentCatcher={currentCatcher}
         ></CatchersBox>
-        <div className="panel-item-small panel panel-row box">
+        <div className="panel-item-small panel panel-row">
           <StepBox steps={this.props.approach.steps}></StepBox>
         </div>
-        <div className="panel-item-large panel panel-row padded-panel box">
+        <div className="panel-item-large panel panel-row padded-panel">
           <DiceBox dice={this.props.dice}></DiceBox>
         </div>
-        <div className="panel-item-large panel panel-row padded-panel box">
+        <div className="panel-item-large panel panel-row padded-panel">
           { button }
         </div>
       </div>

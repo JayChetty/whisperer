@@ -8,7 +8,7 @@ var DiceBox = React.createClass({
       })
     }
     return(
-      <div>
+      <div className="box">
         { diceImages }
       </div>
     )

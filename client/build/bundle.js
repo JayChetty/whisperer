@@ -20206,24 +20206,24 @@
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'panel column-panel panel-item-large box' },
+	      { className: 'panel column-panel panel-item-large ' },
 	      React.createElement(CatchersBox, {
 	        catchers: this.props.catchers,
 	        currentCatcher: currentCatcher
 	      }),
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-small panel panel-row box' },
+	        { className: 'panel-item-small panel panel-row' },
 	        React.createElement(StepBox, { steps: this.props.approach.steps })
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-large panel panel-row padded-panel box' },
+	        { className: 'panel-item-large panel panel-row padded-panel' },
 	        React.createElement(DiceBox, { dice: this.props.dice })
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-large panel panel-row padded-panel box' },
+	        { className: 'panel-item-large panel panel-row padded-panel' },
 	        button
 	      )
 	    );
@@ -36301,7 +36301,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'box' },
 	      diceImages
 	    );
 	  }
@@ -36313,22 +36313,22 @@
 /* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var React = __webpack_require__(1);
 	var StepBox = React.createClass({
-	  displayName: 'StepBox',
+	  displayName: "StepBox",
 	
 	  render: function render() {
 	    return React.createElement(
-	      'div',
-	      null,
+	      "div",
+	      { className: "__midnight-blue" },
 	      React.createElement(
-	        'p',
+	        "p",
 	        null,
-	        ' Steps: ',
+	        " Steps: ",
 	        this.props.steps,
-	        ' '
+	        " "
 	      )
 	    );
 	  }
@@ -36378,7 +36378,7 @@
 	  displayName: "Catcher",
 	
 	  render: function render() {
-	    var classes = "";
+	    var classes = "__midnight-blue";
 	    if (this.props.isCurrentCatcher) classes += " emphasise";
 	    return React.createElement(
 	      "div",
@@ -36447,7 +36447,7 @@
 	    });
 	    return React.createElement(
 	      'div',
-	      { className: 'panel column-panel panel-item-small box' },
+	      { className: 'panel column-panel panel-item-large' },
 	      chickenListItems
 	    );
 	  }
