@@ -25,7 +25,9 @@ var CatchGame = React.createClass({
         <ChickenPen
           chickens={this.props.game.chickens}
           onAttemptSteal = {this.props.onAttemptSteal}
-          lastAction={this.props.game.currentApproach.lastAction}>
+          lastAction={this.props.game.currentApproach.lastAction}
+          inRace = {this.props.inRace}
+          racingChickenIndex= {this.props.game.racingChickenIndex}
         >
         </ChickenPen>
         <ApproachBox
@@ -34,6 +36,8 @@ var CatchGame = React.createClass({
           onStep = {this.props.onStep}
           catchers = {this.props.game.catchers}
           dice = {this.props.game.dice}
+          inRace = {this.props.inRace}
+          onRaceChicken = {this.props.onRaceChicken}
         >
         </ApproachBox>
 

@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Game = require('./components/Game.jsx');
 var Redux = require('redux');
-var startState = require('./start_state');
+var startState = require('./race_state');
 
 var Approach = require('./models/approach');
 var StandardChecker = require('./models/standard_checker');

@@ -6,7 +6,7 @@ var Chicken = React.createClass({
   },
   render:function(){
     var ownerBox = <div></div>
-    var attemptSteal = this.handleAttemptSteal
+    var attemptSteal = this.handleAttemptSteal;
     if(this.props.chicken.owner){
       ownerBox = <div className="emphasise card-tag animated bounce"> {this.props.chicken.ownerObject.name}</div>
       attemptSteal = function(){
@@ -24,6 +24,21 @@ var Chicken = React.createClass({
     }else{
       var classesForCard = "card __card-green __white"
     }
+    var nameClasses = "";
+    if(this.props.inRace){
+      var chickenDetails = (<span className="__small-text __midnight-blue __block">
+        Speed: {this.props.chicken.speed} |
+        Distance: {this.props.chicken.raceSteps}
+      </span>)
+      if(this.props.isRacingChicken){
+        nameClasses += " __gray"
+      }
+    }else{
+      var chickenDetails = (<span className="__small-text __midnight-blue __block">
+        Speed: {this.props.chicken.speed} |
+        Scare: {this.props.chicken.scare}
+      </span>)
+    }
     return(
       <div className={classesForCard}>
         <div className="card-header">
@@ -38,9 +53,10 @@ var Chicken = React.createClass({
           </div>
         </div>
         <div className="card-content __inline-block">
-          {this.props.chicken.name}
-          <span className="__small-text __midnight-blue __block">Speed: {this.props.chicken.speed} |
-          Scare: {this.props.chicken.scare}</span>
+          <div className= {nameClasses}>
+            {this.props.chicken.name}
+          </div>
+          {chickenDetails}
         </div>
         {ownerBox}
       </div>

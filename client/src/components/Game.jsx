@@ -6,13 +6,12 @@ var Game = React.createClass({
     var allChickensCaught = _.every(this.props.game.chickens, (chicken)=>{
       return( !!chicken.owner );
     })
-    if(allChickensCaught){
+    if(false){//removing race game for now
       var gameComponent = (
         <RaceGame
           game = { this.props.game }
           onRaceChicken = {this.props.onRaceChicken}
         >
-
         </RaceGame>
       )
     } else{
@@ -22,6 +21,8 @@ var Game = React.createClass({
           onNextApproach = {this.props.onNextApproach}
           onStep = {this.props.onStep}
           onAttemptSteal = {this.props.onAttemptSteal}
+          inRace = {allChickensCaught}
+          onRaceChicken = {this.props.onRaceChicken}
         >
         </CatchGame>
       )

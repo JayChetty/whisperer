@@ -20090,7 +20090,8 @@
 	    var allChickensCaught = _.every(this.props.game.chickens, function (chicken) {
 	      return !!chicken.owner;
 	    });
-	    if (allChickensCaught) {
+	    if (false) {
+	      //removing race game for now
 	      var gameComponent = React.createElement(RaceGame, {
 	        game: this.props.game,
 	        onRaceChicken: this.props.onRaceChicken
@@ -20100,7 +20101,9 @@
 	        game: this.props.game,
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
-	        onAttemptSteal: this.props.onAttemptSteal
+	        onAttemptSteal: this.props.onAttemptSteal,
+	        inRace: allChickensCaught,
+	        onRaceChicken: this.props.onRaceChicken
 	      });
 	    }
 	    return React.createElement(
@@ -20148,20 +20151,21 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'panel column-panel' },
-	      React.createElement(
-	        ChickenPen,
-	        {
-	          chickens: this.props.game.chickens,
-	          onAttemptSteal: this.props.onAttemptSteal,
-	          lastAction: this.props.game.currentApproach.lastAction },
-	        '>'
-	      ),
+	      React.createElement(ChickenPen, {
+	        chickens: this.props.game.chickens,
+	        onAttemptSteal: this.props.onAttemptSteal,
+	        lastAction: this.props.game.currentApproach.lastAction,
+	        inRace: this.props.inRace,
+	        racingChickenIndex: this.props.game.racingChickenIndex
+	      }),
 	      React.createElement(ApproachBox, {
 	        approach: this.props.game.currentApproach,
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
 	        catchers: this.props.game.catchers,
-	        dice: this.props.game.dice
+	        dice: this.props.game.dice,
+	        inRace: this.props.inRace,
+	        onRaceChicken: this.props.onRaceChicken
 	      })
 	    );
 	  }
@@ -20185,17 +20189,21 @@
 	var ApproachBox = React.createClass({
 	  displayName: 'ApproachBox',
 	
-	  handleNextApproach: function handleNextApproach() {
-	    this.props.onNextApproach();
-	  },
+	
 	  render: function render() {
 	    var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
 	    var button = React.createElement(
 	      'button',
-	      { onClick: this.handleNextApproach },
+	      { onClick: this.props.onNextApproach },
 	      ' Next Player Start Approach'
 	    );
-	
+	    if (this.props.inRace) {
+	      var button = React.createElement(
+	        'button',
+	        { onClick: this.props.onRaceChicken },
+	        ' Go! '
+	      );
+	    }
 	    if (this.props.approach && !this.props.approach.finished) {
 	      var button = React.createElement(
 	        'button',
@@ -20203,17 +20211,30 @@
 	        ' Step '
 	      );
 	    }
+	    var stepClasses = "panel-item-small panel panel-row";
+	    var catcherClasses = "panel column-panel panel-item-large";
+	    if (this.props.inRace) {
+	      console.log('inRACE YO');
+	      stepClasses = stepClasses += " __hidden";
+	      catcherClasses = catcherClasses += " __hidden";
+	    }
+	
+	    console.log('catchers', catcherClasses);
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'panel column-panel panel-item-large ' },
-	      React.createElement(CatchersBox, {
-	        catchers: this.props.catchers,
-	        currentCatcher: currentCatcher
-	      }),
+	      null,
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-small panel panel-row' },
+	        { className: catcherClasses },
+	        React.createElement(CatchersBox, {
+	          catchers: this.props.catchers,
+	          currentCatcher: currentCatcher
+	        })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: stepClasses },
 	        React.createElement(StepBox, { steps: this.props.approach.steps })
 	      ),
 	      React.createElement(
@@ -36437,12 +36458,17 @@
 	  render: function render() {
 	    var _this = this;
 	
-	    var chickenListItems = this.props.chickens.map(function (chicken) {
+	    var chickenListItems = this.props.chickens.map(function (chicken, index) {
+	      console.log('idchick', _this.props.racingChickenId);
+	      var isRacingChicken = _this.props.inRace && index === _this.props.racingChickenIndex;
+	      console.log('isracing chie', isRacingChicken);
 	      return React.createElement(Chicken, {
 	        chicken: chicken,
 	        key: chicken.id,
 	        onAttemptSteal: _this.props.onAttemptSteal,
-	        lastAction: _this.props.lastAction
+	        lastAction: _this.props.lastAction,
+	        inRace: _this.props.inRace,
+	        isRacingChicken: isRacingChicken
 	      });
 	    });
 	    return React.createElement(
@@ -36494,6 +36520,29 @@
 	    } else {
 	      var classesForCard = "card __card-green __white";
 	    }
+	    var nameClasses = "";
+	    if (this.props.inRace) {
+	      var chickenDetails = React.createElement(
+	        'span',
+	        { className: '__small-text __midnight-blue __block' },
+	        'Speed: ',
+	        this.props.chicken.speed,
+	        ' | Distance: ',
+	        this.props.chicken.raceSteps
+	      );
+	      if (this.props.isRacingChicken) {
+	        nameClasses += " __gray";
+	      }
+	    } else {
+	      var chickenDetails = React.createElement(
+	        'span',
+	        { className: '__small-text __midnight-blue __block' },
+	        'Speed: ',
+	        this.props.chicken.speed,
+	        ' | Scare: ',
+	        this.props.chicken.scare
+	      );
+	    }
 	    return React.createElement(
 	      'div',
 	      { className: classesForCard },
@@ -36514,15 +36563,12 @@
 	      React.createElement(
 	        'div',
 	        { className: 'card-content __inline-block' },
-	        this.props.chicken.name,
 	        React.createElement(
-	          'span',
-	          { className: '__small-text __midnight-blue __block' },
-	          'Speed: ',
-	          this.props.chicken.speed,
-	          ' | Scare: ',
-	          this.props.chicken.scare
-	        )
+	          'div',
+	          { className: nameClasses },
+	          this.props.chicken.name
+	        ),
+	        chickenDetails
 	      ),
 	      ownerBox
 	    );
@@ -37415,7 +37461,7 @@
 	    speed: 6,
 	    scare: 5,
 	    startScare: 5,
-	    owner: null,
+	    owner: 1,
 	    raceSteps: 0
 	  }, {
 	    id: 2,
@@ -37423,14 +37469,14 @@
 	    speed: 8,
 	    scare: 4,
 	    startScare: 4,
-	    owner: null,
+	    owner: 1,
 	    raceSteps: 0
 	  }, { id: 3,
 	    name: 'Chubby',
 	    speed: 9,
 	    scare: 2,
 	    startScare: 2,
-	    owner: null,
+	    owner: 2,
 	    raceSteps: 0
 	  }, {
 	    id: 4,
@@ -37438,7 +37484,7 @@
 	    speed: 15,
 	    scare: 1,
 	    startScare: 1,
-	    owner: null,
+	    owner: 2,
 	    raceSteps: 0
 	  }],
 	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
@@ -37587,7 +37633,7 @@
 	'use strict';
 	
 	var _ = __webpack_require__(169);
-	var startState = __webpack_require__(193);
+	var startState = __webpack_require__(199);
 	
 	var catchGameReducer = function catchGameReducer(state, action) {
 	  switch (action.type) {
@@ -37679,6 +37725,50 @@
 	};
 	
 	module.exports = catchGameReducer;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
+	  chickens: [{ id: 1,
+	    name: 'Susan',
+	    speed: 6,
+	    scare: 5,
+	    startScare: 5,
+	    owner: null,
+	    raceSteps: 0
+	  }, {
+	    id: 2,
+	    name: 'Bob',
+	    speed: 8,
+	    scare: 4,
+	    startScare: 4,
+	    owner: null,
+	    raceSteps: 0
+	  }, { id: 3,
+	    name: 'Chubby',
+	    speed: 9,
+	    scare: 2,
+	    startScare: 2,
+	    owner: null,
+	    raceSteps: 0
+	  }, {
+	    id: 4,
+	    name: 'Maggie',
+	    speed: 15,
+	    scare: 1,
+	    startScare: 1,
+	    owner: null,
+	    raceSteps: 0
+	  }],
+	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
+	  dice: [],
+	  racingChickenIndex: 0
+	};
 
 /***/ }
 /******/ ]);
