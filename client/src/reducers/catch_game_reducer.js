@@ -27,7 +27,9 @@ var catchGameReducer = function(state, action){
     case "SCARE_CHICKENS":
       var oldChickens = state.chickens
       var scaredChickens = state.chickens.map(function(chicken){
-        return Object.assign( {}, chicken, {scare: chicken.scare - 1});
+        var scare = chicken.scare - 1;
+        if(scare < 0 ) scare = 0;
+        return Object.assign( {}, chicken, {scare: scare});
       })
       var catachableChickens = _.filter(scaredChickens, (chicken)=>{
         return _.isNull(chicken.owner)

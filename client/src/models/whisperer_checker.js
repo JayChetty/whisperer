@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var WhispererChecker = function(){
-  this.speedMultiplier = 6;
 }
 
 WhispererChecker.prototype = {
@@ -12,7 +11,7 @@ WhispererChecker.prototype = {
     return !includesOne
   },
   shouldSteal:function(diceRoll, chicken){
-    return _.sum(diceRoll) >= chicken.speed*this.speedMultiplier
+    return _.sum(diceRoll) >= chicken.speed
   }
 
 }

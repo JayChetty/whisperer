@@ -20142,22 +20142,26 @@
 	    // var penChickens = _.filter(this.props.game.chickens, (chicken)=>{
 	    //   return( _.isNull(chicken.owner));
 	    // })
-	    var catchableChickens = _.filter(this.props.game.chickens, function (chicken) {
-	      return chicken.scare > 0;
-	    });
+	    // var catchableChickens = _.filter(this.props.game.chickens, (chicken)=>{
+	    //   return(chicken.scare > 0);
+	    // })
 	    return React.createElement(
 	      'div',
-	      { className: 'panel' },
+	      { className: 'panel column-panel' },
+	      React.createElement(
+	        ChickenPen,
+	        {
+	          chickens: this.props.game.chickens,
+	          onAttemptSteal: this.props.onAttemptSteal,
+	          lastAction: this.props.game.currentApproach.lastAction },
+	        '>'
+	      ),
 	      React.createElement(ApproachBox, {
 	        approach: this.props.game.currentApproach,
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
 	        catchers: this.props.game.catchers,
 	        dice: this.props.game.dice
-	      }),
-	      React.createElement(ChickenPen, {
-	        chickens: catchableChickens,
-	        onAttemptSteal: this.props.onAttemptSteal
 	      })
 	    );
 	  }
@@ -20217,7 +20221,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-small panel panel-row box' },
+	        { className: 'panel-item-small panel panel-row padded-panel box' },
 	        button,
 	        React.createElement(DiceBox, { dice: this.props.dice })
 	      )
@@ -36281,21 +36285,21 @@
 /* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var React = __webpack_require__(1);
 	var DiceBox = React.createClass({
-	  displayName: "DiceBox",
+	  displayName: 'DiceBox',
 	
 	  render: function render() {
 	    if (this.props.dice) {
 	      var diceImages = this.props.dice.map(function (num) {
-	        var imageString = "images/die_face_" + num + ".png";
-	        return React.createElement("img", { src: imageString, height: "20", width: "20" });
+	        var imageString = 'images/die_face_' + num + '.png';
+	        return React.createElement('img', { className: 'padded-image', src: imageString, height: '32', width: '32' });
 	      });
 	    }
 	    return React.createElement(
-	      "div",
+	      'div',
 	      null,
 	      diceImages
 	    );
@@ -36404,6 +36408,12 @@
 	        null,
 	        ' ',
 	        this.props.lastAction
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        ' Whisperer? - ',
+	        this.props.isWhisperer.toString()
 	      )
 	    );
 	  }
@@ -36427,7 +36437,12 @@
 	    var _this = this;
 	
 	    var chickenListItems = this.props.chickens.map(function (chicken) {
-	      return React.createElement(Chicken, { chicken: chicken, key: chicken.id, onAttemptSteal: _this.props.onAttemptSteal });
+	      return React.createElement(Chicken, {
+	        chicken: chicken,
+	        key: chicken.id,
+	        onAttemptSteal: _this.props.onAttemptSteal,
+	        lastAction: _this.props.lastAction
+	      });
 	    });
 	    return React.createElement(
 	      'div',
@@ -36459,23 +36474,55 @@
 	    if (this.props.chicken.owner) {
 	      ownerBox = React.createElement(
 	        'div',
-	        { className: 'emphasise' },
-	        ' ( ',
-	        this.props.chicken.ownerObject.name,
-	        ' )'
+	        { className: 'emphasise card-tag animated bounce' },
+	        ' ',
+	        this.props.chicken.ownerObject.name
 	      );
 	      attemptSteal = function attemptSteal() {
 	        console.log('cannot steal stolen chickens');
 	      };
 	    }
+	
+	    var classesForImage = "";
+	    if (this.props.lastAction == "SCARE") {
+	      classesForImage = "animated shake";
+	    }
+	
+	    if (this.props.chicken.scare === 0) {
+	      var classesForCard = "card __card-gray __midnight-blue";
+	    } else {
+	      var classesForCard = "card __card-green __white";
+	    }
 	    return React.createElement(
 	      'div',
-	      { onClick: this.handleAttemptSteal },
-	      this.props.chicken.name,
-	      'Speed: ',
-	      this.props.chicken.speed,
-	      'Scare: ',
-	      this.props.chicken.scare,
+	      { className: classesForCard },
+	      React.createElement(
+	        'div',
+	        { className: 'card-header' },
+	        React.createElement(
+	          'div',
+	          { className: classesForImage },
+	          React.createElement('img', {
+	            onClick: this.handleAttemptSteal,
+	            className: 'padded-image',
+	            src: 'images/chicken.png',
+	            height: '32',
+	            width: '32' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'card-content __inline-block' },
+	        this.props.chicken.name,
+	        React.createElement(
+	          'span',
+	          { className: '__small-text __midnight-blue __block' },
+	          'Speed: ',
+	          this.props.chicken.speed,
+	          ' | Scare: ',
+	          this.props.chicken.scare
+	        )
+	      ),
 	      ownerBox
 	    );
 	  }
@@ -37361,20 +37408,35 @@
 	'use strict';
 	
 	module.exports = {
-	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Valerie' }],
+	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
 	  chickens: [{ id: 1,
-	    name: 'QuickChick',
-	    speed: 1,
-	    scare: 3,
-	    startScare: 1,
-	    owner: null,
+	    name: 'Susan',
+	    speed: 6,
+	    scare: 5,
+	    startScare: 5,
+	    owner: 0,
 	    raceSteps: 0
 	  }, {
 	    id: 2,
-	    name: 'SlowChick',
-	    speed: 2,
+	    name: 'Bob',
+	    speed: 8,
 	    scare: 4,
 	    startScare: 4,
+	    owner: null,
+	    raceSteps: 0
+	  }, { id: 3,
+	    name: 'Chubby',
+	    speed: 9,
+	    scare: 2,
+	    startScare: 2,
+	    owner: null,
+	    raceSteps: 0
+	  }, {
+	    id: 4,
+	    name: 'Maggie',
+	    speed: 15,
+	    scare: 1,
+	    startScare: 1,
 	    owner: null,
 	    raceSteps: 0
 	  }],
@@ -37444,9 +37506,7 @@
 	'use strict';
 	
 	var _ = __webpack_require__(169);
-	var StandardChecker = function StandardChecker() {
-	  this.speedMultiplier = 6;
-	};
+	var StandardChecker = function StandardChecker() {};
 	
 	StandardChecker.prototype = {
 	  isEven: function isEven(n) {
@@ -37456,7 +37516,7 @@
 	    return this.isEven(_.sum(diceRoll));
 	  },
 	  shouldSteal: function shouldSteal(diceRoll, chicken) {
-	    return _.sum(diceRoll) >= chicken.speed * this.speedMultiplier;
+	    return _.sum(diceRoll) >= chicken.speed;
 	  }
 	
 	};
@@ -37470,9 +37530,7 @@
 	'use strict';
 	
 	var _ = __webpack_require__(169);
-	var WhispererChecker = function WhispererChecker() {
-	  this.speedMultiplier = 6;
-	};
+	var WhispererChecker = function WhispererChecker() {};
 	
 	WhispererChecker.prototype = {
 	  isEven: function isEven(n) {
@@ -37485,7 +37543,7 @@
 	    return !includesOne;
 	  },
 	  shouldSteal: function shouldSteal(diceRoll, chicken) {
-	    return _.sum(diceRoll) >= chicken.speed * this.speedMultiplier;
+	    return _.sum(diceRoll) >= chicken.speed;
 	  }
 	
 	};
@@ -37559,7 +37617,9 @@
 	    case "SCARE_CHICKENS":
 	      var oldChickens = state.chickens;
 	      var scaredChickens = state.chickens.map(function (chicken) {
-	        return Object.assign({}, chicken, { scare: chicken.scare - 1 });
+	        var scare = chicken.scare - 1;
+	        if (scare < 0) scare = 0;
+	        return Object.assign({}, chicken, { scare: scare });
 	      });
 	      var catachableChickens = _.filter(scaredChickens, function (chicken) {
 	        return _.isNull(chicken.owner);

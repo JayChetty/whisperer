@@ -13,7 +13,7 @@ describe('standard checker', function(){
     var stubDiceScores = [3,6];
     expect(standardChecker.shouldStep(stubDiceScores)).to.be.false
   });
-  it('should steal chicken if total dice score greater equal than chicken speed times multiplier(6)', function(){
+  it('should steal chicken if total dice score greater equal than chicken speed', function(){
     var standardChecker = new StandardChecker();
     var stubDiceScores = [3,6];
     var mockChicken = {
@@ -22,12 +22,12 @@ describe('standard checker', function(){
     }
     expect(standardChecker.shouldSteal(stubDiceScores,mockChicken)).to.be.true
   })
-  it('should not steal chicken if total dice score greater equal than chicken speed times multiplier(6)', function(){
+  it('should not steal chicken if total dice score greater equal than chicken speed', function(){
     var standardChecker = new StandardChecker();
     var stubDiceScores = [3,6];
     var mockChicken = {
       id:1,
-      speed: 2
+      speed: 10
     }
     expect(standardChecker.shouldSteal(stubDiceScores,mockChicken)).to.be.false
   })

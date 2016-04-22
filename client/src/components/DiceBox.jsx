@@ -4,7 +4,7 @@ var DiceBox = React.createClass({
     if(this.props.dice){
       var diceImages = this.props.dice.map((num)=>{
         var imageString = `images/die_face_${num}.png`
-        return <img src={imageString} height="20" width="20"></img>
+        return <img className='padded-image' src={imageString} height="32" width="32"></img>
       })
     }
     return(

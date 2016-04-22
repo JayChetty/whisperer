@@ -17,11 +17,17 @@ var CatchGame = React.createClass({
     // var penChickens = _.filter(this.props.game.chickens, (chicken)=>{
     //   return( _.isNull(chicken.owner));
     // })
-    var catchableChickens = _.filter(this.props.game.chickens, (chicken)=>{
-      return(chicken.scare > 0);
-    })
+    // var catchableChickens = _.filter(this.props.game.chickens, (chicken)=>{
+    //   return(chicken.scare > 0);
+    // })
     return(
-      <div className='panel'>
+      <div className='panel column-panel'>
+        <ChickenPen
+          chickens={this.props.game.chickens}
+          onAttemptSteal = {this.props.onAttemptSteal}
+          lastAction={this.props.game.currentApproach.lastAction}>
+        >
+        </ChickenPen>
         <ApproachBox
           approach={this.props.game.currentApproach}
           onNextApproach={this.props.onNextApproach}
@@ -30,11 +36,7 @@ var CatchGame = React.createClass({
           dice = {this.props.game.dice}
         >
         </ApproachBox>
-        <ChickenPen
-          chickens={catchableChickens}
-          onAttemptSteal = {this.props.onAttemptSteal}
-        >
-        </ChickenPen>
+
 
       </div>
     )

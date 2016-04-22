@@ -5,7 +5,12 @@ var ChickenPen = React.createClass({
   render:function(){
     var chickenListItems = this.props.chickens.map((chicken)=>{
       return(
-      <Chicken chicken={chicken} key={chicken.id} onAttemptSteal={this.props.onAttemptSteal}>
+      <Chicken
+        chicken={chicken}
+        key={chicken.id}
+        onAttemptSteal={this.props.onAttemptSteal}
+        lastAction ={this.props.lastAction}
+      >
       </Chicken>
       )
     })

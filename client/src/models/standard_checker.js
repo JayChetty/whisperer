@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var StandardChecker = function(){
-  this.speedMultiplier = 6;
 }
 
 StandardChecker.prototype = {
@@ -11,7 +10,7 @@ StandardChecker.prototype = {
     return this.isEven(_.sum(diceRoll))
   },
   shouldSteal:function(diceRoll, chicken){
-    return _.sum(diceRoll) >= chicken.speed*this.speedMultiplier
+    return _.sum(diceRoll) >= chicken.speed
   }
 
 }

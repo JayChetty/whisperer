@@ -8,16 +8,40 @@ var Chicken = React.createClass({
     var ownerBox = <div></div>
     var attemptSteal = this.handleAttemptSteal
     if(this.props.chicken.owner){
-      ownerBox = <div className="emphasise"> ( {this.props.chicken.ownerObject.name} )</div>
+      ownerBox = <div className="emphasise card-tag animated bounce"> {this.props.chicken.ownerObject.name}</div>
       attemptSteal = function(){
         console.log('cannot steal stolen chickens')
       }
     }
+
+    var classesForImage = "";
+    if(this.props.lastAction == "SCARE"){
+      classesForImage = "animated shake"
+    }
+
+    if(this.props.chicken.scare === 0){
+      var classesForCard = "card __card-gray __midnight-blue"
+    }else{
+      var classesForCard = "card __card-green __white"
+    }
     return(
-      <div onClick={this.handleAttemptSteal} >
-        {this.props.chicken.name}
-        Speed: {this.props.chicken.speed}
-        Scare: {this.props.chicken.scare}
+      <div className={classesForCard}>
+        <div className="card-header">
+          <div className= { classesForImage }>
+            <img
+              onClick={this.handleAttemptSteal}
+              className='padded-image'
+              src='images/chicken.png'
+              height="32"
+              width="32">
+            </img>
+          </div>
+        </div>
+        <div className="card-content __inline-block">
+          {this.props.chicken.name}
+          <span className="__small-text __midnight-blue __block">Speed: {this.props.chicken.speed} |
+          Scare: {this.props.chicken.scare}</span>
+        </div>
         {ownerBox}
       </div>
     )

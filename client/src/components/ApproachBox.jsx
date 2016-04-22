@@ -16,7 +16,7 @@ var ApproachBox = React.createClass({
     if(this.props.approach && !this.props.approach.finished){
       var button = <button onClick ={ this.props.onStep }> Step </button>
     }
-    
+
     return(
       <div className='panel column-panel panel-item-large box'>
         <CatchersBox
@@ -30,7 +30,7 @@ var ApproachBox = React.createClass({
           </ActionBox>
           <StepBox steps={this.props.approach.steps}></StepBox>
         </div>
-        <div className="panel-item-small panel panel-row box">
+        <div className="panel-item-small panel panel-row padded-panel box">
           { button }
           <DiceBox dice={this.props.dice}></DiceBox>
         </div>
