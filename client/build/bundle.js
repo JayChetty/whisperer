@@ -36521,6 +36521,7 @@
 	      var classesForCard = "card __card-green __white";
 	    }
 	    var nameClasses = "";
+	
 	    if (this.props.inRace) {
 	      var chickenDetails = React.createElement(
 	        'span',
@@ -36543,6 +36544,7 @@
 	        this.props.chicken.scare
 	      );
 	    }
+	    var imageStyle = { position: "relative", left: this.props.chicken.raceSteps };
 	    return React.createElement(
 	      'div',
 	      { className: classesForCard },
@@ -36551,7 +36553,9 @@
 	        { className: 'card-header' },
 	        React.createElement(
 	          'div',
-	          { className: classesForImage },
+	          { style: imageStyle,
+	            className: classesForImage
+	          },
 	          React.createElement('img', {
 	            onClick: this.handleAttemptSteal,
 	            className: 'padded-image',

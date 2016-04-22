@@ -25,6 +25,8 @@ var Chicken = React.createClass({
       var classesForCard = "card __card-green __white"
     }
     var nameClasses = "";
+
+
     if(this.props.inRace){
       var chickenDetails = (<span className="__small-text __midnight-blue __block">
         Speed: {this.props.chicken.speed} |
@@ -33,16 +35,20 @@ var Chicken = React.createClass({
       if(this.props.isRacingChicken){
         nameClasses += " __gray"
       }
+
     }else{
       var chickenDetails = (<span className="__small-text __midnight-blue __block">
         Speed: {this.props.chicken.speed} |
         Scare: {this.props.chicken.scare}
       </span>)
     }
+    var imageStyle = { position: "relative", left:this.props.chicken.raceSteps }
     return(
       <div className={classesForCard}>
         <div className="card-header">
-          <div className= { classesForImage }>
+          <div style={imageStyle}
+              className= { classesForImage }
+            >
             <img
               onClick={this.handleAttemptSteal}
               className='padded-image'
