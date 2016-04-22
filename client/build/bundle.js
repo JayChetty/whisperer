@@ -20213,17 +20213,18 @@
 	      }),
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-large panel panel-row box' },
-	        React.createElement(ActionBox, {
-	          isWhisperer: !!this.props.approach.isWhisperer,
-	          lastAction: this.props.approach.lastAction }),
+	        { className: 'panel-item-small panel panel-row box' },
 	        React.createElement(StepBox, { steps: this.props.approach.steps })
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'panel-item-small panel panel-row padded-panel box' },
-	        button,
+	        { className: 'panel-item-large panel panel-row padded-panel box' },
 	        React.createElement(DiceBox, { dice: this.props.dice })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'panel-item-large panel panel-row padded-panel box' },
+	        button
 	      )
 	    );
 	  }
