@@ -20194,20 +20194,20 @@
 	    var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
 	    var button = React.createElement(
 	      'button',
-	      { onClick: this.props.onNextApproach },
+	      { className: 'button', onClick: this.props.onNextApproach },
 	      ' Next Player Start Approach'
 	    );
 	    if (this.props.inRace) {
 	      var button = React.createElement(
 	        'button',
-	        { onClick: this.props.onRaceChicken },
+	        { className: 'button', onClick: this.props.onRaceChicken },
 	        ' Go! '
 	      );
 	    }
 	    if (this.props.approach && !this.props.approach.finished) {
 	      var button = React.createElement(
 	        'button',
-	        { onClick: this.props.onStep },
+	        { className: 'button', onClick: this.props.onStep },
 	        ' Step '
 	      );
 	    }
@@ -37465,7 +37465,7 @@
 	    speed: 6,
 	    scare: 5,
 	    startScare: 5,
-	    owner: 1,
+	    owner: null,
 	    raceSteps: 0
 	  }, {
 	    id: 2,
@@ -37473,14 +37473,14 @@
 	    speed: 8,
 	    scare: 4,
 	    startScare: 4,
-	    owner: 1,
+	    owner: null,
 	    raceSteps: 0
 	  }, { id: 3,
 	    name: 'Chubby',
 	    speed: 9,
 	    scare: 2,
 	    startScare: 2,
-	    owner: 2,
+	    owner: null,
 	    raceSteps: 0
 	  }, {
 	    id: 4,
@@ -37488,7 +37488,7 @@
 	    speed: 15,
 	    scare: 1,
 	    startScare: 1,
-	    owner: 2,
+	    owner: null,
 	    raceSteps: 0
 	  }],
 	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
@@ -37637,7 +37637,7 @@
 	'use strict';
 	
 	var _ = __webpack_require__(169);
-	var startState = __webpack_require__(199);
+	var startState = __webpack_require__(193);
 	
 	var catchGameReducer = function catchGameReducer(state, action) {
 	  switch (action.type) {
@@ -37729,50 +37729,6 @@
 	};
 	
 	module.exports = catchGameReducer;
-
-/***/ },
-/* 199 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
-	  chickens: [{ id: 1,
-	    name: 'Susan',
-	    speed: 6,
-	    scare: 5,
-	    startScare: 5,
-	    owner: null,
-	    raceSteps: 0
-	  }, {
-	    id: 2,
-	    name: 'Bob',
-	    speed: 8,
-	    scare: 4,
-	    startScare: 4,
-	    owner: null,
-	    raceSteps: 0
-	  }, { id: 3,
-	    name: 'Chubby',
-	    speed: 9,
-	    scare: 2,
-	    startScare: 2,
-	    owner: null,
-	    raceSteps: 0
-	  }, {
-	    id: 4,
-	    name: 'Maggie',
-	    speed: 15,
-	    scare: 1,
-	    startScare: 1,
-	    owner: null,
-	    raceSteps: 0
-	  }],
-	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
-	  dice: [],
-	  racingChickenIndex: 0
-	};
 
 /***/ }
 /******/ ]);

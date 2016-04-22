@@ -9,12 +9,12 @@ var ApproachBox = React.createClass({
 
   render:function(){
     var currentCatcher = this.props.approach && !this.props.approach.finished && this.props.approach.catcher;
-    var button = <button onClick={this.props.onNextApproach}> Next Player Start Approach</button>
+    var button = <button className="button" onClick={this.props.onNextApproach}> Next Player Start Approach</button>
     if(this.props.inRace){
-      var button = <button onClick ={ this.props.onRaceChicken }> Go! </button>
+      var button = <button  className="button" onClick ={ this.props.onRaceChicken }> Go! </button>
     }
     if(this.props.approach && !this.props.approach.finished){
-      var button = <button onClick ={ this.props.onStep }> Step </button>
+      var button = <button className="button" onClick ={ this.props.onStep }> Step </button>
     }
     var stepClasses = "panel-item-small panel panel-row";
     var catcherClasses = "panel column-panel panel-item-large";
