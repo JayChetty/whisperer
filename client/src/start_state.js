@@ -6,7 +6,7 @@ module.exports = {
       speed:6,
       scare:5,
       startScare:5,
-      owner:0,
+      owner:null,
       raceSteps:0
     },
     {
