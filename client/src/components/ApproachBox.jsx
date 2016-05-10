@@ -3,7 +3,6 @@ var _ = require('lodash');
 var DiceBox = require('./DiceBox.jsx');
 var StepBox = require('./StepBox.jsx');
 var CatchersBox = require('./CatchersBox.jsx');
-var ActionBox = require('./ActionBox.jsx');
 
 var ApproachBox = React.createClass({
 
