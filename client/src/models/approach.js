@@ -1,30 +1,32 @@
 var _ = require('lodash');
-var Approach = function(store, checker, whisperer){
-  this.store = store;
-  this.checker = checker;
-  this.whisperer = whisperer || false;
-}
+// var Approach = function(store, checker, whisperer){
+//   this.store = store;
+//   this.checker = checker;
+//   this.whisperer = whisperer || false;
+// }
 
-Approach.prototype = {
+Approach = {
   shouldStartWhisperer:function(diceRoll){
     return !this.whisperer && diceRoll[0] === diceRoll[1];
   },
   shouldEndWhisperer:function(diceRoll){
    return this.whisperer && !this.checker.shouldStep(diceRoll);
   },
-  attemptStep:function(diceRoll){
+  attemptStep:function(diceRoll, checker){
     //check if needs to trigger whisperer
     if(this.shouldStartWhisperer(diceRoll)){
-      this.store.dispatch({type:'SET_WHISPERER_ON'});
+      // this.store.dispatch({type:'SET_WHISPERER_ON'});
+      return { type:'SET_WHISPERER_ON' }
     }
     if(this.shouldEndWhisperer(diceRoll)){
-      this.store.dispatch({type:'SET_WHISPERER_OFF'});
+      // this.store.dispatch({type:'SET_WHISPERER_OFF'});
+      return { type:'SET_WHISPERER_OFF' }
     }
     //check if should step or scare
-    if(this.checker.shouldStep(diceRoll)){
-      this.store.dispatch({type:'APPROACH_STEP'});
+    if(checker.shouldStep(diceRoll)){
+      return { type:'APPROACH_STEP' }
     }else{
-      this.store.dispatch({type:'SCARE_CHICKENS'});
+      return { type:'SCARE_CHICKENS' }
     }
   },
   attemptSteal:function(diceRoll, chicken){
@@ -32,16 +34,9 @@ Approach.prototype = {
     if(this.checker.shouldSteal(diceRoll, chicken)){
       chickenId = chicken.id
     }
-    this.store.dispatch({type:'STEAL_CHICKEN', chickenId:chickenId });
+    // this.store.dispatch({type:'STEAL_CHICKEN', chickenId:chickenId });
+    return { type:'SCARE_CHICKENS', chickenId:chickenId }
   },
-
-  // shouldTriggerWhisperer(diceRoll){
-  //   return(diceRoll[0] === diceRoll[1])
-  // },
-  // triggerWhisperer(){
-  //   this.whisperer = true;
-  // },
-
 }
 
 module.exports = Approach;
