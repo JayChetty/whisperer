@@ -55,6 +55,7 @@ var render = function(){
         })
       }}
       onStep = { function(){
+        var action = actions.attemptStep(rollDice(2))
         approach.attemptStep(rollDice(2))
       }}
       onAttemptSteal = { function(chicken){

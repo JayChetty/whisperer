@@ -99,6 +99,7 @@
 	      });
 	    },
 	    onStep: function onStep() {
+	      var action = actions.attemptStep(rollDice(2));
 	      approach.attemptStep(rollDice(2));
 	    },
 	    onAttemptSteal: function onAttemptSteal(chicken) {
@@ -37345,7 +37346,7 @@
 	//   this.whisperer = whisperer || false;
 	// }
 	
-	Approach = {
+	module.exports = {
 	  shouldStartWhisperer: function shouldStartWhisperer(diceRoll) {
 	    return !this.whisperer && diceRoll[0] === diceRoll[1];
 	  },
@@ -37378,8 +37379,6 @@
 	    return { type: 'SCARE_CHICKENS', chickenId: chickenId };
 	  }
 	};
-	
-	module.exports = Approach;
 
 /***/ },
 /* 190 */

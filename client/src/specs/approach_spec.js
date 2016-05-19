@@ -1,4 +1,4 @@
-var Approach = require('../models/approach');
+var createAction = require('../models/approach');
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
@@ -7,14 +7,15 @@ describe('approach', function(){
     // var mockGameStore = {
     //   dispatch:sinon.spy()
     // };
-    var stubChecker = {
-      shouldStep: function(diceRoll){
-        return true;
-      }
-    };
+    // var stubChecker = {
+    //   shouldStep: function(diceRoll){
+    //     return true;
+    //   }
+    // };
+    var isWhisperer = false;
     var stubDiceScores = [4,6];
     // var approach = new Approach(mockGameStore, stubChecker);
-    expect(Approach.attemptStep(stubDiceScores, stubChecker)).to.deep.equal({type:'APPROACH_STEP'});
+    expect(createAction.attemptStep(stubDiceScores, stubChecker,isWhisperer)).to.deep.equal({type:'APPROACH_STEP'});
     // expect(mockGameStore.dispatch.calledWith({type:'APPROACH_STEP'})).to.be.true
   });
 

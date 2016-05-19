@@ -5,7 +5,7 @@ var _ = require('lodash');
 //   this.whisperer = whisperer || false;
 // }
 
-Approach = {
+module.exports = {
   shouldStartWhisperer:function(diceRoll){
     return !this.whisperer && diceRoll[0] === diceRoll[1];
   },
@@ -38,5 +38,3 @@ Approach = {
     return { type:'SCARE_CHICKENS', chickenId:chickenId }
   },
 }
-
-module.exports = Approach;
