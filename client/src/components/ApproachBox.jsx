@@ -18,12 +18,9 @@ var ApproachBox = React.createClass({
     var stepClasses = "panel-item-small panel panel-row";
     var catcherClasses = "panel column-panel panel-item-large";
     if(this.props.inRace){
-      console.log('inRACE YO')
       stepClasses = stepClasses += " __hidden"
       catcherClasses = catcherClasses += " __hidden"
     }
-
-    console.log('catchers', catcherClasses);
 
     return(
       <div>

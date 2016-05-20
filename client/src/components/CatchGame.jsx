@@ -10,7 +10,6 @@ var CatchGame = React.createClass({
       var ownerObject = _.find(this.props.game.catchers, (catcher)=>{
         return catcher.id === chicken.owner
       });
-      console.log('oo', ownerObject)
       chicken.ownerObject = ownerObject
     })
 

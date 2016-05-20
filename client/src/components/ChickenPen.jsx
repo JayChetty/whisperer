@@ -5,9 +5,7 @@ var ChickenPen = React.createClass({
   render:function(){
 
     var chickenListItems = this.props.chickens.map((chicken,index)=>{
-      console.log('idchick', this.props.racingChickenId)
       var isRacingChicken = this.props.inRace && index === this.props.racingChickenIndex
-      console.log('isracing chie', isRacingChicken)
       return(
       <Chicken
         chicken={chicken}

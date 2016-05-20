@@ -52,31 +52,38 @@
 	var Redux = __webpack_require__(177);
 	var startState = __webpack_require__(188);
 	
-	var Approach = __webpack_require__(189);
-	var StandardChecker = __webpack_require__(190);
-	var WhispererChecker = __webpack_require__(191);
+	var turnWhispererOn = __webpack_require__(189);
+	var turnWhispererOff = __webpack_require__(191);
 	
-	var Race = __webpack_require__(192);
-	var catchGameReducer = __webpack_require__(193);
+	var attemptStep = __webpack_require__(192);
+	var attemptStepWhisperer = __webpack_require__(193);
+	
+	var createStepAction = __webpack_require__(194);
+	
+	// var Approach = require('./models/approach');
+	// var StandardChecker = require('./models/standard_checker');
+	// var WhispererChecker = require('./models/whisperer_checker');
+	
+	var Race = __webpack_require__(195);
+	var catchGameReducer = __webpack_require__(196);
 	var _ = __webpack_require__(169);
 	
 	var gameStore = Redux.createStore(catchGameReducer, startState, window.devToolsExtension ? window.devToolsExtension() : undefined);
 	
-	var approach = new Approach(gameStore);
+	// var approach = new Approach(gameStore);
 	var race = new Race(gameStore);
 	
-	var createApproach = function createApproach(approachState) {
-	  var isWhisperer = approachState.isWhisperer;
-	  var checker = isWhisperer ? new WhispererChecker() : new StandardChecker();
-	  return new Approach(gameStore, checker, isWhisperer);
-	};
+	// var createApproach = function(approachState){
+	//   var isWhisperer = approachState.isWhisperer;
+	//   var checker = isWhisperer ? new WhispererChecker() : new StandardChecker()
+	//   return new Approach(gameStore, checker, isWhisperer);
+	// }
 	
 	var rollDice = function rollDice(numDice) {
 	  var dice = [];
 	  for (var i = 0; i < numDice; i++) {
 	    dice.push(_.random(1, 6));
 	  }
-	  console.log('dispatching dice', dice);
 	  gameStore.dispatch({
 	    type: 'SET_LAST_ROLL',
 	    dice: dice
@@ -86,10 +93,10 @@
 	
 	var _ = __webpack_require__(169);
 	var render = function render() {
-	  var approachState = gameStore.getState().currentApproach;
-	  if (approachState) {
-	    var approach = createApproach(approachState);
-	  }
+	  // var approachState = gameStore.getState().currentApproach
+	  // if(approachState){
+	  //   var approach = createApproach(approachState)
+	  // }
 	  ReactDOM.render(React.createElement(Game, {
 	    game: gameStore.getState(),
 	    onNextApproach: function onNextApproach() {
@@ -99,18 +106,39 @@
 	      });
 	    },
 	    onStep: function onStep() {
-	      var action = actions.attemptStep(rollDice(2));
-	      approach.attemptStep(rollDice(2));
-	    },
-	    onAttemptSteal: function onAttemptSteal(chicken) {
+	      var dice = rollDice(2);
+	      //check trigger whisperer action
+	      if (!gameStore.getState().currentApproach.isWhisperer) {
+	        if (turnWhispererOn(dice)) {
+	          var whispererAction = { type: 'SET_WHISPERER_ON' };
+	          gameStore.dispatch(whispererAction);
+	        }
+	      } else {
+	        if (turnWhispererOff(dice)) {
+	          var whispererAction = { type: 'SET_WHISPERER_OFF' };
+	          gameStore.dispatch(whispererAction);
+	        }
+	      }
+	
+	      //trigger step action
+	      if (gameStore.getState().currentApproach.isWhisperer) {
+	        var shouldStep = attemptStepWhisperer(dice);
+	      } else {
+	        var shouldStep = attemptStep(dice);
+	      }
+	      var stepAction = createStepAction(shouldStep);
+	      gameStore.dispatch(stepAction);
+	    }
+	
+	    /*onAttemptSteal = { function(chicken){
 	      console.log('chicken', chicken);
-	      approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken);
-	    },
-	    onRaceChicken: function onRaceChicken(chicken) {
+	      approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
+	    }}
+	    onRaceChicken= { function(chicken){
 	      // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
 	      // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
-	      race.attemptRaceStep(rollDice(2));
-	    }
+	      race.attemptRaceStep(rollDice(2))
+	    }}*/
 	  }), document.getElementById('app'));
 	};
 	
@@ -20129,7 +20157,6 @@
 	      var ownerObject = _.find(_this.props.game.catchers, function (catcher) {
 	        return catcher.id === chicken.owner;
 	      });
-	      console.log('oo', ownerObject);
 	      chicken.ownerObject = ownerObject;
 	    });
 	
@@ -20204,12 +20231,9 @@
 	    var stepClasses = "panel-item-small panel panel-row";
 	    var catcherClasses = "panel column-panel panel-item-large";
 	    if (this.props.inRace) {
-	      console.log('inRACE YO');
 	      stepClasses = stepClasses += " __hidden";
 	      catcherClasses = catcherClasses += " __hidden";
 	    }
-	
-	    console.log('catchers', catcherClasses);
 	
 	    return React.createElement(
 	      'div',
@@ -36417,9 +36441,7 @@
 	    var _this = this;
 	
 	    var chickenListItems = this.props.chickens.map(function (chicken, index) {
-	      console.log('idchick', _this.props.racingChickenId);
 	      var isRacingChicken = _this.props.inRace && index === _this.props.racingChickenIndex;
-	      console.log('isracing chie', isRacingChicken);
 	      return React.createElement(Chicken, {
 	        chicken: chicken,
 	        key: chicken.id,
@@ -37339,46 +37361,13 @@
 
 	'use strict';
 	
-	var _ = __webpack_require__(169);
-	// var Approach = function(store, checker, whisperer){
-	//   this.store = store;
-	//   this.checker = checker;
-	//   this.whisperer = whisperer || false;
-	// }
+	var diceChecker = __webpack_require__(190);
 	
-	module.exports = {
-	  shouldStartWhisperer: function shouldStartWhisperer(diceRoll) {
-	    return !this.whisperer && diceRoll[0] === diceRoll[1];
-	  },
-	  shouldEndWhisperer: function shouldEndWhisperer(diceRoll) {
-	    return this.whisperer && !this.checker.shouldStep(diceRoll);
-	  },
-	  attemptStep: function attemptStep(diceRoll, checker) {
-	    //check if needs to trigger whisperer
-	    if (this.shouldStartWhisperer(diceRoll)) {
-	      // this.store.dispatch({type:'SET_WHISPERER_ON'});
-	      return { type: 'SET_WHISPERER_ON' };
-	    }
-	    if (this.shouldEndWhisperer(diceRoll)) {
-	      // this.store.dispatch({type:'SET_WHISPERER_OFF'});
-	      return { type: 'SET_WHISPERER_OFF' };
-	    }
-	    //check if should step or scare
-	    if (checker.shouldStep(diceRoll)) {
-	      return { type: 'APPROACH_STEP' };
-	    } else {
-	      return { type: 'SCARE_CHICKENS' };
-	    }
-	  },
-	  attemptSteal: function attemptSteal(diceRoll, chicken) {
-	    var chickenId = null;
-	    if (this.checker.shouldSteal(diceRoll, chicken)) {
-	      chickenId = chicken.id;
-	    }
-	    // this.store.dispatch({type:'STEAL_CHICKEN', chickenId:chickenId });
-	    return { type: 'SCARE_CHICKENS', chickenId: chickenId };
-	  }
-	};
+	function turnWhispererOn(dice) {
+	  return diceChecker.isDouble(dice);
+	}
+	
+	module.exports = turnWhispererOn;
 
 /***/ },
 /* 190 */
@@ -37387,22 +37376,23 @@
 	'use strict';
 	
 	var _ = __webpack_require__(169);
-	var StandardChecker = function StandardChecker() {};
 	
-	StandardChecker.prototype = {
-	  isEven: function isEven(n) {
-	    return n % 2 == 0;
+	module.exports = {
+	  numberIsEven: function numberIsEven(n) {
+	    return n % 2 === 0;
 	  },
-	  shouldStep: function shouldStep(diceRoll) {
-	    return this.isEven(_.sum(diceRoll));
+	  isEven: function isEven(diceRoll) {
+	    return this.numberIsEven(_.sum(diceRoll));
 	  },
-	  shouldSteal: function shouldSteal(diceRoll, chicken) {
-	    return _.sum(diceRoll) >= chicken.speed;
+	  containsNumber: function containsNumber(diceRoll, numberToCheck) {
+	    return _.some(diceRoll, function (number) {
+	      return number === numberToCheck;
+	    });
+	  },
+	  isDouble: function isDouble(diceRoll) {
+	    return diceRoll[0] === diceRoll[1];
 	  }
-	
 	};
-	
-	module.exports = StandardChecker;
 
 /***/ },
 /* 191 */
@@ -37410,29 +37400,60 @@
 
 	'use strict';
 	
-	var _ = __webpack_require__(169);
-	var WhispererChecker = function WhispererChecker() {};
+	var diceChecker = __webpack_require__(190);
 	
-	WhispererChecker.prototype = {
-	  isEven: function isEven(n) {
-	    return n % 2 == 0;
-	  },
-	  shouldStep: function shouldStep(diceRoll) {
-	    var includesOne = _.some(diceRoll, function (number) {
-	      return number === 1;
-	    });
-	    return !includesOne;
-	  },
-	  shouldSteal: function shouldSteal(diceRoll, chicken) {
-	    return _.sum(diceRoll) >= chicken.speed;
-	  }
+	function turnWhispererOff(dice) {
+	  return diceChecker.containsNumber(dice, 1);
+	}
 	
-	};
-	
-	module.exports = WhispererChecker;
+	module.exports = turnWhispererOff;
 
 /***/ },
 /* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var diceChecker = __webpack_require__(190);
+	
+	function attemptStep(dice) {
+	  return diceChecker.isEven(dice);
+	}
+	
+	module.exports = attemptStep;
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var diceChecker = __webpack_require__(190);
+	
+	function attemptStep(dice) {
+	  return !diceChecker.containsNumber(dice, 1);
+	}
+	
+	module.exports = attemptStep;
+
+/***/ },
+/* 194 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	function attemptStep(success) {
+	  if (success) {
+	    return { type: 'APPROACH_STEP' };
+	  } else {
+	    return { type: 'SCARE_CHICKENS' };
+	  }
+	}
+	
+	module.exports = attemptStep;
+
+/***/ },
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37461,7 +37482,7 @@
 	module.exports = Race;
 
 /***/ },
-/* 193 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
