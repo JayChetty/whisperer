@@ -35,6 +35,6 @@ module.exports = {
       chickenId = chicken.id
     }
     // this.store.dispatch({type:'STEAL_CHICKEN', chickenId:chickenId });
-    return { type:'SCARE_CHICKENS', chickenId:chickenId }
+    return { type:'STEAL_CHICKENS', chickenId:chickenId }
   },
 }

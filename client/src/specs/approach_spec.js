@@ -15,7 +15,8 @@ describe('approach', function(){
     var isWhisperer = false;
     var stubDiceScores = [4,6];
     // var approach = new Approach(mockGameStore, stubChecker);
-    expect(createAction.attemptStep(stubDiceScores, stubChecker,isWhisperer)).to.deep.equal({type:'APPROACH_STEP'});
+    expect(createAction.attemptStep(stubDiceScores, stubChecker,isWhisperer))
+    .to.deep.equal({type:'APPROACH_STEP'});
     // expect(mockGameStore.dispatch.calledWith({type:'APPROACH_STEP'})).to.be.true
   });
 
