@@ -52,114 +52,36 @@
 	var Redux = __webpack_require__(177);
 	var startState = __webpack_require__(201);
 	
-	var turnWhispererOn = __webpack_require__(189);
-	var turnWhispererOff = __webpack_require__(191);
+	var approachDispatcher = __webpack_require__(206);
+	var stepDispatcher = __webpack_require__(202);
+	var stealDispatcher = __webpack_require__(204);
+	var raceDispatcher = __webpack_require__(205);
 	
-	var attemptStep = __webpack_require__(192);
-	var attemptStepWhisperer = __webpack_require__(193);
-	
-	var attemptSteal = __webpack_require__(197);
-	var raceMoveSuccess = __webpack_require__(199);
-	
-	var createStepAction = __webpack_require__(194);
-	var createStealAction = __webpack_require__(198);
-	var createRaceAction = __webpack_require__(200);
-	
-	// var Approach = require('./models/approach');
-	// var StandardChecker = require('./models/standard_checker');
-	// var WhispererChecker = require('./models/whisperer_checker');
-	
-	var Race = __webpack_require__(195);
 	var catchGameReducer = __webpack_require__(196);
-	var _ = __webpack_require__(169);
 	
 	var gameStore = Redux.createStore(catchGameReducer, startState, window.devToolsExtension ? window.devToolsExtension() : undefined);
 	
-	// var approach = new Approach(gameStore);
-	var race = new Race(gameStore);
-	
-	// var createApproach = function(approachState){
-	//   var isWhisperer = approachState.isWhisperer;
-	//   var checker = isWhisperer ? new WhispererChecker() : new StandardChecker()
-	//   return new Approach(gameStore, checker, isWhisperer);
-	// }
-	
-	var rollDice = function rollDice(numDice) {
-	  var dice = [];
-	  for (var i = 0; i < numDice; i++) {
-	    dice.push(_.random(1, 6));
-	  }
-	  gameStore.dispatch({
-	    type: 'SET_LAST_ROLL',
-	    dice: dice
-	  });
-	  return dice;
-	};
-	
-	var _ = __webpack_require__(169);
 	var render = function render() {
-	  // var approachState = gameStore.getState().currentApproach
-	  // if(approachState){
-	  //   var approach = createApproach(approachState)
-	  // }
 	  ReactDOM.render(React.createElement(Game, {
 	    game: gameStore.getState(),
 	    onNextApproach: function onNextApproach() {
-	      gameStore.dispatch({
-	        type: 'NEXT_APPROACH',
-	        catcher: 1
-	      });
+	      approachDispatcher(gameStore);
 	    },
 	    onStep: function onStep() {
-	      var dice = rollDice(2);
-	      //check trigger whisperer action
-	      if (!gameStore.getState().currentApproach.isWhisperer) {
-	        if (turnWhispererOn(dice)) {
-	          var whispererAction = { type: 'SET_WHISPERER_ON' };
-	          gameStore.dispatch(whispererAction);
-	        }
-	      } else {
-	        if (turnWhispererOff(dice)) {
-	          var whispererAction = { type: 'SET_WHISPERER_OFF' };
-	          gameStore.dispatch(whispererAction);
-	        }
-	      }
-	      //dipatch the step action
-	      if (gameStore.getState().currentApproach.isWhisperer) {
-	        var shouldStep = attemptStepWhisperer(dice);
-	      } else {
-	        var shouldStep = attemptStep(dice);
-	      }
-	      var stepAction = createStepAction(shouldStep);
-	      gameStore.dispatch(stepAction);
+	      stepDispatcher(gameStore);
 	    },
-	
 	    onAttemptSteal: function onAttemptSteal(chicken) {
-	      console.log('chicken', chicken);
-	      // approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
-	      var numDice = gameStore.getState().currentApproach.steps;
-	      var dice = rollDice(numDice);
-	      var stealSuccess = attemptSteal(chicken.speed, dice);
-	      var stealAction = createStealAction(stealSuccess, chicken);
-	      console.log('stealAction', stealAction);
-	      gameStore.dispatch(stealAction);
+	      stealDispatcher(gameStore, chicken);
 	    },
 	    onRaceChicken: function onRaceChicken(chicken) {
-	      var dice = rollDice(2);
-	      var moveSuccess = raceMoveSuccess(dice);
-	      var raceAction = createRaceAction(moveSuccess);
-	      gameStore.dispatch(raceAction);
-	      // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
-	      // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
+	      raceDispatcher(gameStore, chicken);
 	    }
 	  }), document.getElementById('app'));
 	};
 	
-	window.onload = function () {
-	  render();
-	};
-	
 	gameStore.subscribe(render);
+	
+	window.onload = render;
 
 /***/ },
 /* 1 */
@@ -37469,35 +37391,7 @@
 	module.exports = attemptStep;
 
 /***/ },
-/* 195 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _ = __webpack_require__(169);
-	var Race = function Race(store) {
-	  this.store = store;
-	};
-	
-	Race.prototype = {
-	  isEven: function isEven(n) {
-	    return n % 2 == 0;
-	  },
-	  stepSuccess: function stepSuccess(diceRoll) {
-	    return this.isEven(_.sum(diceRoll));
-	  },
-	  attemptRaceStep: function attemptRaceStep(diceRoll) {
-	    if (this.stepSuccess(diceRoll)) {
-	      this.store.dispatch({ type: 'INCREASE_RACING_CHICKEN_STEPS' });
-	    }
-	    this.store.dispatch({ type: 'SHIFT_RACING_CHICKEN_INDEX' });
-	  }
-	
-	};
-	
-	module.exports = Race;
-
-/***/ },
+/* 195 */,
 /* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37700,6 +37594,127 @@
 	  dice: [],
 	  racingChickenIndex: 0
 	};
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var turnWhispererOn = __webpack_require__(189);
+	var turnWhispererOff = __webpack_require__(191);
+	
+	var attemptStep = __webpack_require__(192);
+	var attemptStepWhisperer = __webpack_require__(193);
+	
+	var createStepAction = __webpack_require__(194);
+	var diceRollDispatcher = __webpack_require__(203);
+	
+	function whispererDispatcher(store, dice) {
+	  if (!store.getState().currentApproach.isWhisperer) {
+	    if (turnWhispererOn(dice)) {
+	      var whispererAction = { type: 'SET_WHISPERER_ON' };
+	      store.dispatch(whispererAction);
+	    }
+	  } else {
+	    if (turnWhispererOff(dice)) {
+	      var whispererAction = { type: 'SET_WHISPERER_OFF' };
+	      store.dispatch(whispererAction);
+	    }
+	  }
+	}
+	
+	function stepDispatcher(store, dice) {
+	  if (store.getState().currentApproach.isWhisperer) {
+	    var shouldStep = attemptStepWhisperer(dice);
+	  } else {
+	    var shouldStep = attemptStep(dice);
+	  }
+	  var stepAction = createStepAction(shouldStep);
+	  store.dispatch(stepAction);
+	}
+	
+	function approachDispatcher(store) {
+	  var dice = diceRollDispatcher(store, 2);
+	  whispererDispatcher(store, dice);
+	  stepDispatcher(store, dice);
+	}
+	
+	module.exports = approachDispatcher;
+
+/***/ },
+/* 203 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	function diceRollDispatcher(store, numDice) {
+	  var dice = [];
+	  for (var i = 0; i < numDice; i++) {
+	    dice.push(_.random(1, 6));
+	  }
+	  store.dispatch({
+	    type: 'SET_LAST_ROLL',
+	    dice: dice
+	  });
+	  return dice;
+	}
+	
+	module.exports = diceRollDispatcher;
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var attemptSteal = __webpack_require__(197);
+	var createStealAction = __webpack_require__(198);
+	var diceRollDispatcher = __webpack_require__(203);
+	
+	function stealDispatcher(store, chicken) {
+	  var numDice = store.getState().currentApproach.steps;
+	  var dice = diceRollDispatcher(store, numDice);
+	  var stealSuccess = attemptSteal(chicken.speed, dice);
+	  var stealAction = createStealAction(stealSuccess, chicken);
+	  store.dispatch(stealAction);
+	}
+	
+	module.exports = stealDispatcher;
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var diceRollDispatcher = __webpack_require__(203);
+	var raceMoveSuccess = __webpack_require__(199);
+	var createRaceAction = __webpack_require__(200);
+	
+	function raceDispatcher(store, chicken) {
+	  var dice = diceRollDispatcher(store, 2);
+	  var moveSuccess = raceMoveSuccess(dice);
+	  var raceAction = createRaceAction(moveSuccess);
+	  store.dispatch(raceAction);
+	}
+	
+	module.exports = raceDispatcher;
+
+/***/ },
+/* 206 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	function approachDispatcher(store) {
+	  store.dispatch({
+	    type: 'NEXT_APPROACH',
+	    catcher: 1
+	  });
+	}
+	
+	module.exports = approachDispatcher;
 
 /***/ }
 /******/ ]);
