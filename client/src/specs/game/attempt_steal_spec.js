@@ -2,7 +2,7 @@ var attemptSteal = require('../../game/attempt_steal');
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
-describe('steal sucess', function(){
+describe('steal success', function(){
   it('should steal if total is greater than chicken speed', function(){
     const dice = [2,8];
     const chickenSpeed = 5;

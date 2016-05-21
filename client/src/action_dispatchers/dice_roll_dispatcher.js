@@ -1,5 +1,5 @@
 function diceRollDispatcher(store, numDice){
-  var dice = []
+  const dice = []
   for (var i = 0; i < numDice; i++) {
     dice.push(_.random(1,6));
   }

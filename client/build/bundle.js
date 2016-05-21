@@ -37618,17 +37618,17 @@
 	    }
 	  } else {
 	    if (turnWhispererOff(dice)) {
-	      var whispererAction = { type: 'SET_WHISPERER_OFF' };
-	      store.dispatch(whispererAction);
+	      var _whispererAction = { type: 'SET_WHISPERER_OFF' };
+	      store.dispatch(_whispererAction);
 	    }
 	  }
 	}
 	
 	function stepDispatcher(store, dice) {
 	  if (store.getState().currentApproach.isWhisperer) {
-	    var shouldStep = attemptStepWhisperer(dice);
+	    var _shouldStep = attemptStepWhisperer(dice);
 	  } else {
-	    var shouldStep = attemptStep(dice);
+	    var _shouldStep2 = attemptStep(dice);
 	  }
 	  var stepAction = createStepAction(shouldStep);
 	  store.dispatch(stepAction);
