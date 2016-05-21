@@ -8,7 +8,7 @@ var createStepAction = require('../action_creators/create_step_action');
 var diceRollDispatcher = require('./dice_roll_dispatcher');
 
 function whispererDispatcher(store, dice){
-  if(!store.getState().currentApproach.isWhisperer){
+  if(!store.getState().game.currentApproach.isWhisperer){
     if(turnWhispererOn(dice)){
       const whispererAction = {type:'SET_WHISPERER_ON'};
       store.dispatch(whispererAction);
@@ -23,11 +23,14 @@ function whispererDispatcher(store, dice){
 }
 
 function stepDispatcher(store, dice){
-  if(store.getState().currentApproach.isWhisperer){
-    const shouldStep = attemptStepWhisperer(dice);
+
+  var shouldStep = false;
+  if(store.getState().game.currentApproach.isWhisperer){
+    shouldStep = attemptStepWhisperer(dice);
   }else{
-    const shouldStep = attemptStep(dice);
+    shouldStep = attemptStep(dice);
   }
+
   const stepAction = createStepAction(shouldStep);
   store.dispatch(stepAction)
 }

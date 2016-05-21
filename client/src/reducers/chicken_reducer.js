@@ -1,26 +1,30 @@
 var _ = require('lodash');
-var startState = require('../start_state');
 
-var catchGameReducer = function(state = startState, action){
+const startState = {
+  chickens:[
+    { id:1,
+      name:'QuickChick',
+      speed:15,
+      scare:1,
+      startScare:1,
+      owner:null,
+      raceSteps:0
+    },
+    {
+      id:2,
+      name:'SlowChick',
+      speed:5,
+      scare:4,
+      startScare:4,
+      owner:null,
+      raceSteps:0
+    }
+  ],
+  racingChickenIndex:null,
+}
+
+export default function(state = startState, action){
   switch(action.type){
-
-    case "NEXT_APPROACH":
-      if(state.currentApproach && !state.currentApproach.finished){return state}
-      var catcherIds = state.catchers.map(function(catcher){return catcher.id});
-      if(!state.currentApproach){
-        var nextCatcherIndex = 0;
-      }else{
-        var currentIndex = _.indexOf(catcherIds, state.currentApproach.catcher);
-        var nextCatcherIndex = (currentIndex + 1) % catcherIds.length;
-      }
-      var catcherId = catcherIds[nextCatcherIndex];
-      return Object.assign( {}, state, {
-        currentApproach:{catcher: catcherId, steps: 0, finished:false, lastAction:null}
-      } )
-    case "APPROACH_STEP":
-      var currentSteps = state.currentApproach.steps
-      var newApproach = Object.assign( {}, state.currentApproach, {steps: currentSteps+1, lastAction:"STEP"})
-      return Object.assign( {}, state, {currentApproach:newApproach} )
     case "SCARE_CHICKENS":
       var oldChickens = state.chickens
       var scaredChickens = state.chickens.map(function(chicken){
@@ -46,20 +50,20 @@ var catchGameReducer = function(state = startState, action){
         var scaredApproach = Object.assign( {}, state.currentApproach, {lastAction:"SCARE"} )
         return Object.assign( {}, state, {chickens:scaredChickens, currentApproach:scaredApproach} )
       }
-
     case "STEAL_CHICKEN":
       var oldChickens = state.chickens
       var lastAction = "FAIL_STEAL"
       var chickensAfterSteal = state.chickens.map(function(chicken){
         var newOwner = chicken.owner
         if(chicken.id === action.chickenId){
-          var newOwner = state.currentApproach.catcher
+          var newOwner = action.catcherId
           lastAction = "STEAL"
         }
         return Object.assign( {}, chicken, {owner: newOwner, scare: chicken.startScare} );
       })
       var updatedApproach = Object.assign( {}, state.currentApproach, {finished: true, lastAction:lastAction})
       return Object.assign( {}, state, {chickens:chickensAfterSteal, currentApproach:updatedApproach} )
+
     case "SHIFT_RACING_CHICKEN_INDEX":
       var racingChickenIndex = 0 //default to first chicken
       if(!_.isNull(state.racingChickenIndex)){
@@ -74,16 +78,7 @@ var catchGameReducer = function(state = startState, action){
         return Object.assign( {}, chicken )
       })
       return Object.assign( {}, state, {chickens: updatedChickens} );
-    case "SET_WHISPERER_ON":
-      var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: true})
-      return Object.assign( {}, state, {currentApproach:newApproach} )
-    case "SET_WHISPERER_OFF":
-      var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: false})
-      return Object.assign( {}, state, {currentApproach:newApproach} )
-
     default:
       return state
   }
 }
-
-module.exports = catchGameReducer;

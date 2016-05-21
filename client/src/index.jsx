@@ -2,7 +2,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Game = require('./components/Game.jsx');
 var Redux = require('redux');
-var startState = require('./race_state');
+var startState = require('./start_state');
+
+import reducer from './reducers/index'
 
 var approachDispatcher = require('./action_dispatchers/approach_dispatcher')
 var stepDispatcher = require('./action_dispatchers/step_dispatcher')
@@ -11,14 +13,18 @@ var raceDispatcher = require('./action_dispatchers/race_dispatcher')
 
 var catchGameReducer = require('./reducers/catch_game_reducer.js');
 
-var gameStore = Redux.createStore(catchGameReducer, startState,
-  window.devToolsExtension ? window.devToolsExtension() : undefined
-);
+var gameStore = Redux.createStore(reducer);
+// var gameStore = Redux.createStore(reducer,null,
+//   window.devToolsExtension ? window.devToolsExtension() : undefined
+// );
+
+console.log('gamestore state', gameStore.getState());
 
 var render = function(){
   ReactDOM.render(
     <Game
-      game={ gameStore.getState() }
+      game={ gameStore.getState().game }
+      dice = {gameStore.getState().dice }
       onNextApproach = { ()=> { approachDispatcher(gameStore) } }
       onStep = { ()=> { stepDispatcher(gameStore); } }
       onAttemptSteal = { (chicken)=> { stealDispatcher(gameStore, chicken); } }
@@ -29,5 +35,4 @@ var render = function(){
 }
 
 gameStore.subscribe(render);
-
 window.onload = render;

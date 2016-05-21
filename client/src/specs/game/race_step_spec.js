@@ -1,4 +1,4 @@
-var raceStep = require('../../game/race_step');
+var raceStep = require('../../game/race_move_success');
 var expect = require('chai').expect;
 var sinon = require('sinon');
 

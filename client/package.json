@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "start": "webpack -w",
-    "test": "mocha src/specs"
+    "test": "mocha  src/specs --recursive --require babel-core/register"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "babel": "^6.5.2",
+    "babel-polyfill": "^6.9.0",
     "lodash": "^4.10.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",

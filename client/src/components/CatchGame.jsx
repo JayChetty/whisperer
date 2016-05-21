@@ -34,7 +34,7 @@ var CatchGame = React.createClass({
           onNextApproach={this.props.onNextApproach}
           onStep = {this.props.onStep}
           catchers = {this.props.game.catchers}
-          dice = {this.props.game.dice}
+          dice = {this.props.dice}
           inRace = {this.props.inRace}
           onRaceChicken = {this.props.onRaceChicken}
         >

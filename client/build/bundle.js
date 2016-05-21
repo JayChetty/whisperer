@@ -46,11 +46,17 @@
 
 	'use strict';
 	
+	var _index = __webpack_require__(207);
+	
+	var _index2 = _interopRequireDefault(_index);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
 	var Game = __webpack_require__(166);
 	var Redux = __webpack_require__(177);
-	var startState = __webpack_require__(201);
+	var startState = __webpack_require__(188);
 	
 	var approachDispatcher = __webpack_require__(206);
 	var stepDispatcher = __webpack_require__(202);
@@ -59,11 +65,17 @@
 	
 	var catchGameReducer = __webpack_require__(196);
 	
-	var gameStore = Redux.createStore(catchGameReducer, startState, window.devToolsExtension ? window.devToolsExtension() : undefined);
+	var gameStore = Redux.createStore(_index2.default);
+	// var gameStore = Redux.createStore(reducer,null,
+	//   window.devToolsExtension ? window.devToolsExtension() : undefined
+	// );
+	
+	console.log('gamestore state', gameStore.getState());
 	
 	var render = function render() {
 	  ReactDOM.render(React.createElement(Game, {
-	    game: gameStore.getState(),
+	    game: gameStore.getState().game,
+	    dice: gameStore.getState().dice,
 	    onNextApproach: function onNextApproach() {
 	      approachDispatcher(gameStore);
 	    },
@@ -80,7 +92,6 @@
 	};
 	
 	gameStore.subscribe(render);
-	
 	window.onload = render;
 
 /***/ },
@@ -20058,6 +20069,7 @@
 	      null,
 	      React.createElement(CatchGame, {
 	        game: this.props.game,
+	        dice: this.props.dice,
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
 	        onAttemptSteal: this.props.onAttemptSteal,
@@ -20116,7 +20128,7 @@
 	        onNextApproach: this.props.onNextApproach,
 	        onStep: this.props.onStep,
 	        catchers: this.props.game.catchers,
-	        dice: this.props.game.dice,
+	        dice: this.props.dice,
 	        inRace: this.props.inRace,
 	        onRaceChicken: this.props.onRaceChicken
 	      })
@@ -36264,7 +36276,7 @@
 	
 	  render: function render() {
 	    if (this.props.dice) {
-	      var diceImages = this.props.dice.map(function (num) {
+	      var diceImages = this.props.dice.lastRoll.map(function (num) {
 	        var imageString = 'images/die_face_' + num + '.png';
 	        return React.createElement('img', { className: 'padded-image', src: imageString, height: '32', width: '32' });
 	      });
@@ -37400,10 +37412,11 @@
 	var _ = __webpack_require__(169);
 	var startState = __webpack_require__(188);
 	
-	var catchGameReducer = function catchGameReducer(state, action) {
+	var catchGameReducer = function catchGameReducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? startState : arguments[0];
+	  var action = arguments[1];
+	
 	  switch (action.type) {
-	    case "SET_LAST_ROLL":
-	      return Object.assign({}, state, { dice: action.dice });
 	
 	    case "NEXT_APPROACH":
 	      if (state.currentApproach && !state.currentApproach.finished) {
@@ -37552,50 +37565,7 @@
 	module.exports = createRaceAction;
 
 /***/ },
-/* 201 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
-	  chickens: [{ id: 1,
-	    name: 'Susan',
-	    speed: 6,
-	    scare: 5,
-	    startScare: 5,
-	    owner: 1,
-	    raceSteps: 0
-	  }, {
-	    id: 2,
-	    name: 'Bob',
-	    speed: 8,
-	    scare: 4,
-	    startScare: 4,
-	    owner: 1,
-	    raceSteps: 0
-	  }, { id: 3,
-	    name: 'Chubby',
-	    speed: 9,
-	    scare: 2,
-	    startScare: 2,
-	    owner: 2,
-	    raceSteps: 0
-	  }, {
-	    id: 4,
-	    name: 'Maggie',
-	    speed: 15,
-	    scare: 1,
-	    startScare: 1,
-	    owner: 2,
-	    raceSteps: 0
-	  }],
-	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
-	  dice: [],
-	  racingChickenIndex: 0
-	};
-
-/***/ },
+/* 201 */,
 /* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37611,7 +37581,7 @@
 	var diceRollDispatcher = __webpack_require__(203);
 	
 	function whispererDispatcher(store, dice) {
-	  if (!store.getState().currentApproach.isWhisperer) {
+	  if (!store.getState().game.currentApproach.isWhisperer) {
 	    if (turnWhispererOn(dice)) {
 	      var whispererAction = { type: 'SET_WHISPERER_ON' };
 	      store.dispatch(whispererAction);
@@ -37625,11 +37595,14 @@
 	}
 	
 	function stepDispatcher(store, dice) {
-	  if (store.getState().currentApproach.isWhisperer) {
-	    var _shouldStep = attemptStepWhisperer(dice);
+	
+	  var shouldStep = false;
+	  if (store.getState().game.currentApproach.isWhisperer) {
+	    shouldStep = attemptStepWhisperer(dice);
 	  } else {
-	    var _shouldStep2 = attemptStep(dice);
+	    shouldStep = attemptStep(dice);
 	  }
+	
 	  var stepAction = createStepAction(shouldStep);
 	  store.dispatch(stepAction);
 	}
@@ -37672,8 +37645,10 @@
 	var createStealAction = __webpack_require__(198);
 	var diceRollDispatcher = __webpack_require__(203);
 	
+	function allChickensScared(chickens) {}
+	
 	function stealDispatcher(store, chicken) {
-	  var numDice = store.getState().currentApproach.steps;
+	  var numDice = store.getState().game.currentApproach.steps;
 	  var dice = diceRollDispatcher(store, numDice);
 	  var stealSuccess = attemptSteal(chicken.speed, dice);
 	  var stealAction = createStealAction(stealSuccess, chicken);
@@ -37707,14 +37682,87 @@
 
 	'use strict';
 	
+	// function allScared(chickens){
+	//   _.every(catachableChickens, (chicken)=>{
+	//     return chicken.scare < 1
+	//   })
+	// }
+	
 	function approachDispatcher(store) {
 	  store.dispatch({
 	    type: 'NEXT_APPROACH',
 	    catcher: 1
 	  });
+	  // if allScared(store.getState().chickens.items){
+	  //   store.dispatch({
+	  //     type:'FINISH_APPROACH'
+	  //   })
+	  // }
 	}
 	
 	module.exports = approachDispatcher;
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _redux = __webpack_require__(177);
+	
+	var _catch_game_reducer = __webpack_require__(196);
+	
+	var _catch_game_reducer2 = _interopRequireDefault(_catch_game_reducer);
+	
+	var _dice_reducer = __webpack_require__(210);
+	
+	var _dice_reducer2 = _interopRequireDefault(_dice_reducer);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// import approach from './approach_reducer'
+	// import chickens from './chicken_reducer'
+	
+	exports.default = (0, _redux.combineReducers)({
+	  // approach,
+	  // chickens,
+	  game: _catch_game_reducer2.default,
+	  dice: _dice_reducer2.default
+	});
+
+/***/ },
+/* 208 */,
+/* 209 */,
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function () {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? startState : arguments[0];
+	  var action = arguments[1];
+	
+	  switch (action.type) {
+	    case "SET_LAST_ROLL":
+	      return Object.assign({}, state, { lastRoll: action.dice });
+	    default:
+	      return state;
+	  }
+	};
+	
+	var _ = __webpack_require__(169);
+	
+	var startState = {
+	  lastRoll: []
+	};
 
 /***/ }
 /******/ ]);

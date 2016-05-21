@@ -9,6 +9,7 @@ var Game = React.createClass({
       <div>
         <CatchGame
           game = { this.props.game }
+          dice = { this.props.dice }
           onNextApproach = {this.props.onNextApproach}
           onStep = {this.props.onStep}
           onAttemptSteal = {this.props.onAttemptSteal}

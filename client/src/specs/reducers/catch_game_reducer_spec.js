@@ -1,5 +1,5 @@
 var expect  = require('chai').expect
-var catchGame = require('../reducers/catch_game_reducer')
+var catchGame = require('../../reducers/catch_game_reducer')
 
 var startState = {
   catchers:[{ id:1, name:'Jay' },{ id:2, name:'Valerie' }],
