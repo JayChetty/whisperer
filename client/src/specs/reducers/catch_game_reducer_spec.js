@@ -1,5 +1,5 @@
-var expect  = require('chai').expect
-var catchGame = require('../../reducers/catch_game_reducer')
+import catchGame from '../../reducers/catch_game_reducer'
+import { expect } from 'chai'
 
 var startState = {
   catchers:[{ id:1, name:'Jay' },{ id:2, name:'Valerie' }],
@@ -134,13 +134,6 @@ describe("catch game reducer", function(){
       chickenId:1
     }
     expect(catchGame(stateWithApproach, action).currentApproach.finished).to.equal(true);
-  });
-  it('should be able to set the last dice roll', function(){
-    var action = {
-      type:'SET_LAST_ROLL',
-      dice:[1,2,3]
-    }
-    expect(catchGame(startState, action).dice).to.deep.equal([1,2,3]);
   });
 
   it('should default to zero when shifting racing index ', function(){
