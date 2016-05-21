@@ -50,7 +50,7 @@
 	var ReactDOM = __webpack_require__(32);
 	var Game = __webpack_require__(166);
 	var Redux = __webpack_require__(177);
-	var startState = __webpack_require__(188);
+	var startState = __webpack_require__(201);
 	
 	var turnWhispererOn = __webpack_require__(189);
 	var turnWhispererOff = __webpack_require__(191);
@@ -59,9 +59,11 @@
 	var attemptStepWhisperer = __webpack_require__(193);
 	
 	var attemptSteal = __webpack_require__(197);
+	var raceMoveSuccess = __webpack_require__(199);
 	
 	var createStepAction = __webpack_require__(194);
 	var createStealAction = __webpack_require__(198);
+	var createRaceAction = __webpack_require__(200);
 	
 	// var Approach = require('./models/approach');
 	// var StandardChecker = require('./models/standard_checker');
@@ -143,9 +145,12 @@
 	      gameStore.dispatch(stealAction);
 	    },
 	    onRaceChicken: function onRaceChicken(chicken) {
+	      var dice = rollDice(2);
+	      var moveSuccess = raceMoveSuccess(dice);
+	      var raceAction = createRaceAction(moveSuccess);
+	      gameStore.dispatch(raceAction);
 	      // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
 	      // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
-	
 	    }
 	  }), document.getElementById('app'));
 	};
@@ -37621,6 +37626,80 @@
 	}
 	
 	module.exports = attemptSteal;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var diceChecker = __webpack_require__(190);
+	
+	function raceStep(dice) {
+	  return diceChecker.isEven(dice);
+	}
+	
+	module.exports = raceStep;
+
+/***/ },
+/* 200 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	function createRaceAction(success) {
+	  if (success) {
+	    return { type: 'INCREASE_RACING_CHICKEN_STEPS' };
+	  } else {
+	    return { type: 'SHIFT_RACING_CHICKEN_INDEX' };
+	  }
+	}
+	
+	module.exports = createRaceAction;
+
+/***/ },
+/* 201 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
+	  chickens: [{ id: 1,
+	    name: 'Susan',
+	    speed: 6,
+	    scare: 5,
+	    startScare: 5,
+	    owner: 1,
+	    raceSteps: 0
+	  }, {
+	    id: 2,
+	    name: 'Bob',
+	    speed: 8,
+	    scare: 4,
+	    startScare: 4,
+	    owner: 1,
+	    raceSteps: 0
+	  }, { id: 3,
+	    name: 'Chubby',
+	    speed: 9,
+	    scare: 2,
+	    startScare: 2,
+	    owner: 2,
+	    raceSteps: 0
+	  }, {
+	    id: 4,
+	    name: 'Maggie',
+	    speed: 15,
+	    scare: 1,
+	    startScare: 1,
+	    owner: 2,
+	    raceSteps: 0
+	  }],
+	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
+	  dice: [],
+	  racingChickenIndex: 0
+	};
 
 /***/ }
 /******/ ]);

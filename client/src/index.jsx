@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Game = require('./components/Game.jsx');
 var Redux = require('redux');
-var startState = require('./start_state');
+var startState = require('./race_state');
 
 var turnWhispererOn = require('./game/turn_whisperer_on');
 var turnWhispererOff = require('./game/turn_whisperer_off');
@@ -11,10 +11,12 @@ var attemptStep = require('./game/attempt_step');
 var attemptStepWhisperer = require('./game/attempt_step_whisperer');
 
 var attemptSteal = require('./game/attempt_steal');
+var raceMoveSuccess = require('./game/race_move_success');
 
 
-var createStepAction = require('./action_creators/create_step_action')
-var createStealAction = require('./action_creators/create_steal_action')
+var createStepAction = require('./action_creators/create_step_action');
+var createStealAction = require('./action_creators/create_steal_action');
+var createRaceAction = require('./action_creators/create_race_action');
 
 // var Approach = require('./models/approach');
 // var StandardChecker = require('./models/standard_checker');
@@ -102,6 +104,10 @@ var render = function(){
         gameStore.dispatch(stealAction);
       }}
       onRaceChicken= { function(chicken){
+        const dice = rollDice(2);
+        const moveSuccess = raceMoveSuccess(dice);
+        const raceAction = createRaceAction(moveSuccess);
+        gameStore.dispatch(raceAction);
         // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
         // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
 
