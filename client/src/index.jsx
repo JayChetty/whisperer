@@ -10,7 +10,11 @@ var turnWhispererOff = require('./game/turn_whisperer_off');
 var attemptStep = require('./game/attempt_step');
 var attemptStepWhisperer = require('./game/attempt_step_whisperer');
 
+var attemptSteal = require('./game/attempt_steal');
+
+
 var createStepAction = require('./action_creators/create_step_action')
+var createStealAction = require('./action_creators/create_steal_action')
 
 // var Approach = require('./models/approach');
 // var StandardChecker = require('./models/standard_checker');
@@ -54,29 +58,29 @@ var render = function(){
   // }
   ReactDOM.render(
     <Game
-      game={gameStore.getState()}
+      game={ gameStore.getState() }
       onNextApproach = { function(){
         gameStore.dispatch({
           type:'NEXT_APPROACH',
           catcher:1
         })
-      }}
+      } }
       onStep = { function(){
         var dice = rollDice(2);
         //check trigger whisperer action
         if(!gameStore.getState().currentApproach.isWhisperer){
           if(turnWhispererOn(dice)){
             var whispererAction = {type:'SET_WHISPERER_ON'};
-            gameStore.dispatch(whispererAction)
-          }
-        }else{
-          if(turnWhispererOff(dice)){
-            var whispererAction = {type:'SET_WHISPERER_OFF'};
-            gameStore.dispatch(whispererAction)
+            gameStore.dispatch(whispererAction);
           }
         }
-
-        //trigger step action
+        else {
+          if(turnWhispererOff(dice)){
+            var whispererAction = {type:'SET_WHISPERER_OFF'};
+            gameStore.dispatch(whispererAction);
+          }
+        }
+        //dipatch the step action
         if(gameStore.getState().currentApproach.isWhisperer){
           var shouldStep = attemptStepWhisperer(dice);
         }else{
@@ -84,19 +88,25 @@ var render = function(){
         }
         var stepAction = createStepAction(shouldStep);
         gameStore.dispatch(stepAction)
-      }}
+        }
+      }
 
-      /*onAttemptSteal = { function(chicken){
+      onAttemptSteal = { function(chicken){
         console.log('chicken', chicken);
-        approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
+        // approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
+        const numDice = gameStore.getState().currentApproach.steps;
+        const dice = rollDice(numDice);
+        const stealSuccess = attemptSteal(chicken.speed, dice);
+        const stealAction = createStealAction(stealSuccess,chicken);
+        console.log('stealAction', stealAction);
+        gameStore.dispatch(stealAction);
       }}
       onRaceChicken= { function(chicken){
         // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
         // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
-        race.attemptRaceStep(rollDice(2))
-      }}*/
-    >
-    </Game>,
+
+      }}
+    />,
     document.getElementById('app')
   );
 }

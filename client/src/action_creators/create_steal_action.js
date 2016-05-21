@@ -3,7 +3,7 @@ function attemptSteal(success, chicken){
   if(success){
     chickenId = chicken.id
   }
-  return { type:'STEAL_CHICKENS', chickenId:chickenId }
+  return { type:'STEAL_CHICKEN', chickenId:chickenId }
 }
 
 module.exports = attemptSteal;

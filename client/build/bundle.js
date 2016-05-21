@@ -58,7 +58,10 @@
 	var attemptStep = __webpack_require__(192);
 	var attemptStepWhisperer = __webpack_require__(193);
 	
+	var attemptSteal = __webpack_require__(197);
+	
 	var createStepAction = __webpack_require__(194);
+	var createStealAction = __webpack_require__(198);
 	
 	// var Approach = require('./models/approach');
 	// var StandardChecker = require('./models/standard_checker');
@@ -119,8 +122,7 @@
 	          gameStore.dispatch(whispererAction);
 	        }
 	      }
-	
-	      //trigger step action
+	      //dipatch the step action
 	      if (gameStore.getState().currentApproach.isWhisperer) {
 	        var shouldStep = attemptStepWhisperer(dice);
 	      } else {
@@ -128,17 +130,23 @@
 	      }
 	      var stepAction = createStepAction(shouldStep);
 	      gameStore.dispatch(stepAction);
-	    }
+	    },
 	
-	    /*onAttemptSteal = { function(chicken){
+	    onAttemptSteal: function onAttemptSteal(chicken) {
 	      console.log('chicken', chicken);
-	      approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
-	    }}
-	    onRaceChicken= { function(chicken){
+	      // approach.attemptSteal(rollDice(gameStore.getState().currentApproach.steps), chicken)
+	      var numDice = gameStore.getState().currentApproach.steps;
+	      var dice = rollDice(numDice);
+	      var stealSuccess = attemptSteal(chicken.speed, dice);
+	      var stealAction = createStealAction(stealSuccess, chicken);
+	      console.log('stealAction', stealAction);
+	      gameStore.dispatch(stealAction);
+	    },
+	    onRaceChicken: function onRaceChicken(chicken) {
 	      // gameStore.dispatch({type:'INCREASE_RACING_CHICKEN_STEPS'});
 	      // gameStore.dispatch({type:'SHIFT_RACING_CHICKEN_INDEX'});
-	      race.attemptRaceStep(rollDice(2))
-	    }}*/
+	
+	    }
 	  }), document.getElementById('app'));
 	};
 	
@@ -37382,7 +37390,7 @@
 	    return n % 2 === 0;
 	  },
 	  isEven: function isEven(diceRoll) {
-	    return this.numberIsEven(_.sum(diceRoll));
+	    return this.numberIsEven(this.sum(diceRoll));
 	  },
 	  containsNumber: function containsNumber(diceRoll, numberToCheck) {
 	    return _.some(diceRoll, function (number) {
@@ -37391,6 +37399,9 @@
 	  },
 	  isDouble: function isDouble(diceRoll) {
 	    return diceRoll[0] === diceRoll[1];
+	  },
+	  sum: function sum(diceRoll) {
+	    return _.sum(diceRoll);
 	  }
 	};
 
@@ -37580,6 +37591,36 @@
 	};
 	
 	module.exports = catchGameReducer;
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var diceChecker = __webpack_require__(190);
+	
+	function attemptSteal(target, dice) {
+	  return diceChecker.sum(dice) > target;
+	}
+	
+	module.exports = attemptSteal;
+
+/***/ },
+/* 198 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	function attemptSteal(success, chicken) {
+	  var chickenId = null;
+	  if (success) {
+	    chickenId = chicken.id;
+	  }
+	  return { type: 'STEAL_CHICKEN', chickenId: chickenId };
+	}
+	
+	module.exports = attemptSteal;
 
 /***/ }
 /******/ ]);

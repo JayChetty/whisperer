@@ -7,9 +7,9 @@ var mockChicken = {
 }
 describe('create steal action', function(){
   it('should create STEAL_CHICKEN with chicken id when success', function(){
-    expect(createStealAction(true,mockChicken)).to.deep.equal({type:'STEAL_CHICKENS',chickenId:1});
+    expect(createStealAction(true,mockChicken)).to.deep.equal({type:'STEAL_CHICKEN',chickenId:1});
   });
   it('should create STEAL_CHICKEN with null chicken id when told', function(){
-    expect(createStealAction(false,mockChicken)).to.deep.equal({type:'STEAL_CHICKENS',chickenId:null});
+    expect(createStealAction(false,mockChicken)).to.deep.equal({type:'STEAL_CHICKEN',chickenId:null});
   });
 })
