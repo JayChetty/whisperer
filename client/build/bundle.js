@@ -36235,9 +36235,9 @@
 	
 	  render: function render() {
 	    if (this.props.dice) {
-	      var diceImages = this.props.dice.lastRoll.map(function (num) {
+	      var diceImages = this.props.dice.lastRoll.map(function (num, index) {
 	        var imageString = 'images/die_face_' + num + '.png';
-	        return React.createElement('img', { className: 'padded-image', src: imageString, height: '32', width: '32' });
+	        return React.createElement('img', { key: index, className: 'padded-image', src: imageString, height: '32', width: '32' });
 	      });
 	    }
 	    return React.createElement(
