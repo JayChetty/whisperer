@@ -108,34 +108,4 @@ export default function catchGameReducer(state = startState, action){
   }else{
     return state
   }
-
-
-  // switch(action.type){
-
-
-
-  //   case "SHIFT_RACING_CHICKEN_INDEX":
-  //     var racingChickenIndex = 0 //default to first chicken
-  //     if(!_.isNull(state.racingChickenIndex)){
-  //       var racingChickenIndex = (state.racingChickenIndex + 1) % state.chickens.length
-  //     }
-  //     return Object.assign( {}, state, {racingChickenIndex:racingChickenIndex} );
-  //   case "INCREASE_RACING_CHICKEN_STEPS":
-  //     var updatedChickens = state.chickens.map((chicken,index)=>{
-  //       if(index === state.racingChickenIndex){
-  //         return Object.assign( {}, chicken, {raceSteps: chicken.raceSteps + chicken.speed}  )
-  //       }
-  //       return Object.assign( {}, chicken )
-  //     })
-  //     return Object.assign( {}, state, {chickens: updatedChickens} );
-  //   case "SET_WHISPERER_ON":
-  //     var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: true})
-  //     return Object.assign( {}, state, {currentApproach:newApproach} )
-  //   case "SET_WHISPERER_OFF":
-  //     var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: false})
-  //     return Object.assign( {}, state, {currentApproach:newApproach} )
-  //
-  //   default:
-  //     return state
-  // }
 }

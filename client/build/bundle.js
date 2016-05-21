@@ -54,7 +54,7 @@
 	
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(32);
-	var Game = __webpack_require__(166);
+	var CatchGame = __webpack_require__(167);
 	var Redux = __webpack_require__(177);
 	var startState = __webpack_require__(188);
 	
@@ -66,14 +66,12 @@
 	var catchGameReducer = __webpack_require__(196);
 	
 	var gameStore = Redux.createStore(_index2.default);
-	// var gameStore = Redux.createStore(reducer,null,
-	//   window.devToolsExtension ? window.devToolsExtension() : undefined
-	// );
+	var gameStore = Redux.createStore(_index2.default, window.devToolsExtension ? window.devToolsExtension() : undefined);
 	
 	console.log('gamestore state', gameStore.getState());
 	
 	var render = function render() {
-	  ReactDOM.render(React.createElement(Game, {
+	  ReactDOM.render(React.createElement(CatchGame, {
 	    game: gameStore.getState().game,
 	    dice: gameStore.getState().dice,
 	    onNextApproach: function onNextApproach() {
@@ -20050,39 +20048,7 @@
 	module.exports = ReactMount.renderSubtreeIntoContainer;
 
 /***/ },
-/* 166 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1);
-	var CatchGame = __webpack_require__(167);
-	var Game = React.createClass({
-	  displayName: 'Game',
-	
-	  render: function render() {
-	    var allChickensCaught = _.every(this.props.game.chickens, function (chicken) {
-	      return !!chicken.owner;
-	    });
-	    return React.createElement(
-	      'div',
-	      null,
-	      React.createElement(CatchGame, {
-	        game: this.props.game,
-	        dice: this.props.dice,
-	        onNextApproach: this.props.onNextApproach,
-	        onStep: this.props.onStep,
-	        onAttemptSteal: this.props.onAttemptSteal,
-	        inRace: allChickensCaught,
-	        onRaceChicken: this.props.onRaceChicken
-	      })
-	    );
-	  }
-	});
-	
-	module.exports = Game;
-
-/***/ },
+/* 166 */,
 /* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -20106,13 +20072,6 @@
 	      });
 	      chicken.ownerObject = ownerObject;
 	    });
-	
-	    // var penChickens = _.filter(this.props.game.chickens, (chicken)=>{
-	    //   return( _.isNull(chicken.owner));
-	    // })
-	    // var catchableChickens = _.filter(this.props.game.chickens, (chicken)=>{
-	    //   return(chicken.scare > 0);
-	    // })
 	    return React.createElement(
 	      'div',
 	      { className: 'panel column-panel' },
@@ -37526,33 +37485,6 @@
 	  } else {
 	    return state;
 	  }
-	
-	  // switch(action.type){
-	
-	  //   case "SHIFT_RACING_CHICKEN_INDEX":
-	  //     var racingChickenIndex = 0 //default to first chicken
-	  //     if(!_.isNull(state.racingChickenIndex)){
-	  //       var racingChickenIndex = (state.racingChickenIndex + 1) % state.chickens.length
-	  //     }
-	  //     return Object.assign( {}, state, {racingChickenIndex:racingChickenIndex} );
-	  //   case "INCREASE_RACING_CHICKEN_STEPS":
-	  //     var updatedChickens = state.chickens.map((chicken,index)=>{
-	  //       if(index === state.racingChickenIndex){
-	  //         return Object.assign( {}, chicken, {raceSteps: chicken.raceSteps + chicken.speed}  )
-	  //       }
-	  //       return Object.assign( {}, chicken )
-	  //     })
-	  //     return Object.assign( {}, state, {chickens: updatedChickens} );
-	  //   case "SET_WHISPERER_ON":
-	  //     var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: true})
-	  //     return Object.assign( {}, state, {currentApproach:newApproach} )
-	  //   case "SET_WHISPERER_OFF":
-	  //     var newApproach = Object.assign( {}, state.currentApproach, {isWhisperer: false})
-	  //     return Object.assign( {}, state, {currentApproach:newApproach} )
-	  //
-	  //   default:
-	  //     return state
-	  // }
 	}
 
 /***/ },

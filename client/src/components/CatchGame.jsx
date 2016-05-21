@@ -12,13 +12,6 @@ var CatchGame = React.createClass({
       });
       chicken.ownerObject = ownerObject
     })
-
-    // var penChickens = _.filter(this.props.game.chickens, (chicken)=>{
-    //   return( _.isNull(chicken.owner));
-    // })
-    // var catchableChickens = _.filter(this.props.game.chickens, (chicken)=>{
-    //   return(chicken.scare > 0);
-    // })
     return(
       <div className='panel column-panel'>
         <ChickenPen
@@ -39,7 +32,6 @@ var CatchGame = React.createClass({
           onRaceChicken = {this.props.onRaceChicken}
         >
         </ApproachBox>
-
 
       </div>
     )
