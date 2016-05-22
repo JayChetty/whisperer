@@ -37139,7 +37139,7 @@
 	  if (gameWon) {
 	    infoBox = React.createElement(
 	      'div',
-	      { className: 'panel' },
+	      { className: 'panel __midnight-blue' },
 	      React.createElement(
 	        'h4',
 	        null,

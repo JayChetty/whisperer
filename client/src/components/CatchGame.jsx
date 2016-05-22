@@ -39,7 +39,7 @@ export default function CatchGame(props){
   )
   if(gameWon){
     infoBox = (
-      <div className= 'panel'>
+      <div className= 'panel __midnight-blue'>
         <h4> {winningChicken.ownerObject.name} wins with {winningChicken.name} ! </h4>
       </div>
     )
