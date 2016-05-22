@@ -15,6 +15,7 @@ var ChickenPen = React.createClass({
         inRace ={this.props.inRace}
         isRacingChicken = { isRacingChicken}
         target = {this.props.target}
+        isWhisperer={this.props.isWhisperer}
       >
       </Chicken>
       )

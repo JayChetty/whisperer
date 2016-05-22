@@ -13,7 +13,7 @@ var Chicken = React.createClass({
     let percentageAlong = this.props.chicken.raceSteps/this.props.target;
     percentageAlong = Math.min(percentageAlong,0.9)
     const distance = percentageAlong * this.state.width;
-    return  distance;
+    return distance;
   },
   render:function(){
     var ownerBox = <div></div>

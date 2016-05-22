@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var startState = require('../race_state');
+var startState = require('../start_state');
 
 
 function createNextApproach(action,state){

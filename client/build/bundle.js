@@ -996,7 +996,7 @@
 	});
 	exports.default = catchGameReducer;
 	var _ = __webpack_require__(15);
-	var startState = __webpack_require__(206);
+	var startState = __webpack_require__(17);
 	
 	function createNextApproach(action, state) {
 	  if (state.currentApproach && !state.currentApproach.finished) {
@@ -17161,7 +17161,50 @@
 
 
 /***/ },
-/* 17 */,
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
+	  chickens: [{ id: 1,
+	    name: 'Susan',
+	    speed: 6,
+	    scare: 5,
+	    startScare: 5,
+	    owner: null,
+	    raceSteps: 0
+	  }, {
+	    id: 2,
+	    name: 'Bob',
+	    speed: 8,
+	    scare: 4,
+	    startScare: 4,
+	    owner: null,
+	    raceSteps: 0
+	  }, { id: 3,
+	    name: 'Chubby',
+	    speed: 9,
+	    scare: 2,
+	    startScare: 2,
+	    owner: null,
+	    raceSteps: 0
+	  }, {
+	    id: 4,
+	    name: 'Maggie',
+	    speed: 15,
+	    scare: 1,
+	    startScare: 1,
+	    owner: null,
+	    raceSteps: 0
+	  }],
+	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
+	  dice: [],
+	  racingChickenIndex: 0
+	};
+
+/***/ },
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37117,7 +37160,8 @@
 	      lastAction: props.game.currentApproach.lastAction,
 	      inRace: inRace,
 	      racingChickenIndex: props.game.racingChickenIndex,
-	      target: target
+	      target: target,
+	      isWhisperer: props.game.currentApproach.isWhisperer
 	    }),
 	    infoBox
 	  );
@@ -37156,9 +37200,13 @@
 	      );
 	    }
 	    if (this.props.approach && !this.props.approach.finished) {
+	      var classes = "button";
+	      if (this.props.approach.isWhisperer) {
+	        classes = classes + " __button-gold";
+	      }
 	      var button = React.createElement(
 	        'button',
-	        { className: 'button', onClick: this.props.onStep },
+	        { className: classes, onClick: this.props.onStep },
 	        ' Step '
 	      );
 	    }
@@ -37333,7 +37381,8 @@
 	        lastAction: _this.props.lastAction,
 	        inRace: _this.props.inRace,
 	        isRacingChicken: isRacingChicken,
-	        target: _this.props.target
+	        target: _this.props.target,
+	        isWhisperer: _this.props.isWhisperer
 	      });
 	    });
 	    return React.createElement(
@@ -37799,50 +37848,6 @@
 	    return { type: 'SHIFT_RACING_CHICKEN_INDEX' };
 	  }
 	}
-
-/***/ },
-/* 206 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
-	  chickens: [{ id: 1,
-	    name: 'Susan',
-	    speed: 6,
-	    scare: 5,
-	    startScare: 5,
-	    owner: 1,
-	    raceSteps: 0
-	  }, {
-	    id: 2,
-	    name: 'Bob',
-	    speed: 8,
-	    scare: 4,
-	    startScare: 4,
-	    owner: 1,
-	    raceSteps: 0
-	  }, { id: 3,
-	    name: 'Chubby',
-	    speed: 9,
-	    scare: 2,
-	    startScare: 2,
-	    owner: 2,
-	    raceSteps: 0
-	  }, {
-	    id: 4,
-	    name: 'Maggie',
-	    speed: 15,
-	    scare: 1,
-	    startScare: 1,
-	    owner: 2,
-	    raceSteps: 0
-	  }],
-	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
-	  dice: [],
-	  racingChickenIndex: 0
-	};
 
 /***/ }
 /******/ ]);

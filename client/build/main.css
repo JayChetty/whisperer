@@ -56,6 +56,14 @@ body {
   padding: 5px;
 }
 
+.button{
+  background-color: gray;
+}
+
+.__button-gold{
+  background-color:#FFD700;
+}
+
 .__card-green {
   background-color: #2ecc71;
 }

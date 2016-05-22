@@ -13,7 +13,11 @@ var ApproachBox = React.createClass({
       var button = <button  className="button" onClick ={ this.props.onRaceChicken }> Go! </button>
     }
     if(this.props.approach && !this.props.approach.finished){
-      var button = <button className="button" onClick ={ this.props.onStep }> Step </button>
+      let classes = "button"
+      if(this.props.approach.isWhisperer){
+        classes = classes + " __button-gold"
+      }
+      var button = <button className={classes} onClick ={ this.props.onStep }> Step </button>
     }
     var stepClasses = "panel-item-small panel panel-row";
     var catcherClasses = "panel column-panel panel-item-large";

@@ -54,6 +54,7 @@ export default function CatchGame(props){
         inRace = {inRace}
         racingChickenIndex= {props.game.racingChickenIndex}
         target = {target}
+        isWhisperer={props.game.currentApproach.isWhisperer}
       >
       </ChickenPen>
       { infoBox }
