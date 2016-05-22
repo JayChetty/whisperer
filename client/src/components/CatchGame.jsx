@@ -39,7 +39,7 @@ export default function CatchGame(props){
   )
   if(gameWon){
     infoBox = (
-      <div className= 'panel-item-large'>
+      <div className= 'panel'>
         <h4> {winningChicken.ownerObject.name} wins with {winningChicken.name} ! </h4>
       </div>
     )
@@ -53,6 +53,7 @@ export default function CatchGame(props){
         lastAction={props.game.currentApproach.lastAction}
         inRace = {inRace}
         racingChickenIndex= {props.game.racingChickenIndex}
+        target = {target}
       >
       </ChickenPen>
       { infoBox }

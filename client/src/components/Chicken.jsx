@@ -1,8 +1,19 @@
 var React = require('react');
 var Chicken = React.createClass({
+  getInitialState:function(){
+    return({width:0})
+  },
   handleAttemptSteal:function(){
-    console.log('trying to steal chicken', this.props.chicken);
     this.props.onAttemptSteal(this.props.chicken);
+  },
+  componentDidMount:function(){
+    this.setState({width: this.refs.holder.offsetWidth})
+  },
+  distanceAlong:function(){
+    let percentageAlong = this.props.chicken.raceSteps/this.props.target;
+    percentageAlong = Math.min(percentageAlong,0.9)
+    const distance = percentageAlong * this.state.width;
+    return  distance;
   },
   render:function(){
     var ownerBox = <div></div>
@@ -45,9 +56,9 @@ var Chicken = React.createClass({
         Scare: {this.props.chicken.scare}
       </span>)
     }
-    var imageStyle = { position: "relative", left:this.props.chicken.raceSteps }
+    var imageStyle = { position: "relative", left:this.distanceAlong()}
     return(
-      <div className={classesForCard}>
+      <div className={classesForCard} ref="holder">
         <div className="card-header">
           <div style={imageStyle}
               className= { classesForImage }

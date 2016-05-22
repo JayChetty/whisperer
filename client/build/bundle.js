@@ -37096,7 +37096,7 @@
 	  if (gameWon) {
 	    infoBox = React.createElement(
 	      'div',
-	      { className: 'panel-item-large' },
+	      { className: 'panel' },
 	      React.createElement(
 	        'h4',
 	        null,
@@ -37116,7 +37116,8 @@
 	      onAttemptSteal: props.onAttemptSteal,
 	      lastAction: props.game.currentApproach.lastAction,
 	      inRace: inRace,
-	      racingChickenIndex: props.game.racingChickenIndex
+	      racingChickenIndex: props.game.racingChickenIndex,
+	      target: target
 	    }),
 	    infoBox
 	  );
@@ -37331,7 +37332,8 @@
 	        onAttemptSteal: _this.props.onAttemptSteal,
 	        lastAction: _this.props.lastAction,
 	        inRace: _this.props.inRace,
-	        isRacingChicken: isRacingChicken
+	        isRacingChicken: isRacingChicken,
+	        target: _this.props.target
 	      });
 	    });
 	    return React.createElement(
@@ -37354,9 +37356,20 @@
 	var Chicken = React.createClass({
 	  displayName: 'Chicken',
 	
+	  getInitialState: function getInitialState() {
+	    return { width: 0 };
+	  },
 	  handleAttemptSteal: function handleAttemptSteal() {
-	    console.log('trying to steal chicken', this.props.chicken);
 	    this.props.onAttemptSteal(this.props.chicken);
+	  },
+	  componentDidMount: function componentDidMount() {
+	    this.setState({ width: this.refs.holder.offsetWidth });
+	  },
+	  distanceAlong: function distanceAlong() {
+	    var percentageAlong = this.props.chicken.raceSteps / this.props.target;
+	    percentageAlong = Math.min(percentageAlong, 0.9);
+	    var distance = percentageAlong * this.state.width;
+	    return distance;
 	  },
 	  render: function render() {
 	    var ownerBox = React.createElement('div', null);
@@ -37410,10 +37423,10 @@
 	        this.props.chicken.scare
 	      );
 	    }
-	    var imageStyle = { position: "relative", left: this.props.chicken.raceSteps };
+	    var imageStyle = { position: "relative", left: this.distanceAlong() };
 	    return React.createElement(
 	      'div',
-	      { className: classesForCard },
+	      { className: classesForCard, ref: 'holder' },
 	      React.createElement(
 	        'div',
 	        { className: 'card-header' },
