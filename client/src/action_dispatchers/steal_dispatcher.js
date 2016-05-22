@@ -1,6 +1,6 @@
-var attemptSteal = require('../game/attempt_steal');
-var createStealAction = require('../action_creators/create_steal_action');
-var diceRollDispatcher = require('./dice_roll_dispatcher')
+import attemptSteal from'../game/attempt_steal';
+import createStealAction from'../action_creators/create_steal_action';
+import diceRollDispatcher from'./dice_roll_dispatcher';
 
 export default function stealDispatcher(store, chicken){
   const numDice = store.getState().game.currentApproach.steps;

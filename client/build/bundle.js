@@ -37485,23 +37485,41 @@
 	  value: true
 	});
 	exports.default = approachDispatcher;
-	var turnWhispererOn = __webpack_require__(193);
-	var turnWhispererOff = __webpack_require__(195);
 	
-	var attemptStep = __webpack_require__(196);
-	var attemptStepWhisperer = __webpack_require__(197);
+	var _turn_whisperer_on = __webpack_require__(193);
 	
-	var createStepAction = __webpack_require__(198);
-	var diceRollDispatcher = __webpack_require__(199);
+	var _turn_whisperer_on2 = _interopRequireDefault(_turn_whisperer_on);
+	
+	var _turn_whisperer_off = __webpack_require__(195);
+	
+	var _turn_whisperer_off2 = _interopRequireDefault(_turn_whisperer_off);
+	
+	var _attempt_step = __webpack_require__(196);
+	
+	var _attempt_step2 = _interopRequireDefault(_attempt_step);
+	
+	var _attempt_step_whisperer = __webpack_require__(197);
+	
+	var _attempt_step_whisperer2 = _interopRequireDefault(_attempt_step_whisperer);
+	
+	var _create_step_action = __webpack_require__(198);
+	
+	var _create_step_action2 = _interopRequireDefault(_create_step_action);
+	
+	var _dice_roll_dispatcher = __webpack_require__(199);
+	
+	var _dice_roll_dispatcher2 = _interopRequireDefault(_dice_roll_dispatcher);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function whispererDispatcher(store, dice) {
 	  if (!store.getState().game.currentApproach.isWhisperer) {
-	    if (turnWhispererOn(dice)) {
+	    if ((0, _turn_whisperer_on2.default)(dice)) {
 	      var whispererAction = { type: 'SET_WHISPERER_ON' };
 	      store.dispatch(whispererAction);
 	    }
 	  } else {
-	    if (turnWhispererOff(dice)) {
+	    if ((0, _turn_whisperer_off2.default)(dice)) {
 	      var _whispererAction = { type: 'SET_WHISPERER_OFF' };
 	      store.dispatch(_whispererAction);
 	    }
@@ -37512,17 +37530,17 @@
 	
 	  var shouldStep = false;
 	  if (store.getState().game.currentApproach.isWhisperer) {
-	    shouldStep = attemptStepWhisperer(dice);
+	    shouldStep = (0, _attempt_step_whisperer2.default)(dice);
 	  } else {
-	    shouldStep = attemptStep(dice);
+	    shouldStep = (0, _attempt_step2.default)(dice);
 	  }
 	
-	  var stepAction = createStepAction(shouldStep);
+	  var stepAction = (0, _create_step_action2.default)(shouldStep);
 	  store.dispatch(stepAction);
 	}
 	
 	function approachDispatcher(store) {
-	  var dice = diceRollDispatcher(store, 2);
+	  var dice = (0, _dice_roll_dispatcher2.default)(store, 2);
 	  whispererDispatcher(store, dice);
 	  stepDispatcher(store, dice);
 	}
@@ -37617,6 +37635,10 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = attemptStep;
 	function attemptStep(success) {
 	  if (success) {
 	    return { type: 'APPROACH_STEP' };
@@ -37624,8 +37646,6 @@
 	    return { type: 'SCARE_CHICKENS' };
 	  }
 	}
-	
-	module.exports = attemptStep;
 
 /***/ },
 /* 199 */
@@ -37659,15 +37679,26 @@
 	  value: true
 	});
 	exports.default = stealDispatcher;
-	var attemptSteal = __webpack_require__(201);
-	var createStealAction = __webpack_require__(202);
-	var diceRollDispatcher = __webpack_require__(199);
+	
+	var _attempt_steal = __webpack_require__(201);
+	
+	var _attempt_steal2 = _interopRequireDefault(_attempt_steal);
+	
+	var _create_steal_action = __webpack_require__(202);
+	
+	var _create_steal_action2 = _interopRequireDefault(_create_steal_action);
+	
+	var _dice_roll_dispatcher = __webpack_require__(199);
+	
+	var _dice_roll_dispatcher2 = _interopRequireDefault(_dice_roll_dispatcher);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function stealDispatcher(store, chicken) {
 	  var numDice = store.getState().game.currentApproach.steps;
-	  var dice = diceRollDispatcher(store, numDice);
-	  var stealSuccess = attemptSteal(chicken.speed, dice);
-	  var stealAction = createStealAction(stealSuccess, chicken);
+	  var dice = (0, _dice_roll_dispatcher2.default)(store, numDice);
+	  var stealSuccess = (0, _attempt_steal2.default)(chicken.speed, dice);
+	  var stealAction = (0, _create_steal_action2.default)(stealSuccess, chicken);
 	  store.dispatch(stealAction);
 	}
 
@@ -37691,6 +37722,10 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = attemptSteal;
 	function attemptSteal(success, chicken) {
 	  var chickenId = null;
 	  if (success) {
@@ -37698,8 +37733,6 @@
 	  }
 	  return { type: 'STEAL_CHICKEN', chickenId: chickenId };
 	}
-	
-	module.exports = attemptSteal;
 
 /***/ },
 /* 203 */
@@ -37711,14 +37744,25 @@
 	  value: true
 	});
 	exports.default = raceDispatcher;
-	var diceRollDispatcher = __webpack_require__(199);
-	var raceMoveSuccess = __webpack_require__(204);
-	var createRaceAction = __webpack_require__(205);
+	
+	var _dice_roll_dispatcher = __webpack_require__(199);
+	
+	var _dice_roll_dispatcher2 = _interopRequireDefault(_dice_roll_dispatcher);
+	
+	var _race_move_success = __webpack_require__(204);
+	
+	var _race_move_success2 = _interopRequireDefault(_race_move_success);
+	
+	var _create_race_action = __webpack_require__(205);
+	
+	var _create_race_action2 = _interopRequireDefault(_create_race_action);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function raceDispatcher(store, chicken) {
-	  var dice = diceRollDispatcher(store, 2);
-	  var moveSuccess = raceMoveSuccess(dice);
-	  var raceAction = createRaceAction(moveSuccess);
+	  var dice = (0, _dice_roll_dispatcher2.default)(store, 2);
+	  var moveSuccess = (0, _race_move_success2.default)(dice);
+	  var raceAction = (0, _create_race_action2.default)(moveSuccess);
 	  store.dispatch(raceAction);
 	}
 
@@ -37742,6 +37786,10 @@
 
 	'use strict';
 	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = createRaceAction;
 	function createRaceAction(success) {
 	  if (success) {
 	    return { type: 'INCREASE_RACING_CHICKEN_STEPS' };
@@ -37749,8 +37797,6 @@
 	    return { type: 'SHIFT_RACING_CHICKEN_INDEX' };
 	  }
 	}
-	
-	module.exports = createRaceAction;
 
 /***/ }
 /******/ ]);

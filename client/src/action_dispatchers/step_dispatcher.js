@@ -1,11 +1,11 @@
-var turnWhispererOn = require('../game/turn_whisperer_on');
-var turnWhispererOff = require('../game/turn_whisperer_off');
+import turnWhispererOn from '../game/turn_whisperer_on';
+import turnWhispererOff from '../game/turn_whisperer_off';
 
-var attemptStep = require('../game/attempt_step');
-var attemptStepWhisperer = require('../game/attempt_step_whisperer');
+import attemptStep from '../game/attempt_step';
+import attemptStepWhisperer from '../game/attempt_step_whisperer';
 
-var createStepAction = require('../action_creators/create_step_action');
-var diceRollDispatcher = require('./dice_roll_dispatcher');
+import createStepAction from '../action_creators/create_step_action';
+import diceRollDispatcher from './dice_roll_dispatcher';
 
 function whispererDispatcher(store, dice){
   if(!store.getState().game.currentApproach.isWhisperer){
