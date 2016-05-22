@@ -1,26 +1,20 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var CatchGame = require('./components/CatchGame.jsx');
-var Redux = require('redux');
-var startState = require('./start_state');
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {createStore} from 'redux'
+import CatchGame from './components/CatchGame.jsx';
 
 import reducer from './reducers/index'
 
-var approachDispatcher = require('./action_dispatchers/approach_dispatcher')
-var stepDispatcher = require('./action_dispatchers/step_dispatcher')
-var stealDispatcher = require('./action_dispatchers/steal_dispatcher')
-var raceDispatcher = require('./action_dispatchers/race_dispatcher')
+import approachDispatcher from './action_dispatchers/approach_dispatcher'
+import stepDispatcher from './action_dispatchers/step_dispatcher'
+import stealDispatcher from './action_dispatchers/steal_dispatcher'
+import raceDispatcher from './action_dispatchers/race_dispatcher'
 
-var catchGameReducer = require('./reducers/catch_game_reducer.js');
-
-var gameStore = Redux.createStore(reducer);
-var gameStore = Redux.createStore(reducer,
+const gameStore = createStore(reducer,
   window.devToolsExtension ? window.devToolsExtension() : undefined
 );
 
-console.log('gamestore state', gameStore.getState());
-
-var render = function(){
+const render = function(){
   ReactDOM.render(
     <CatchGame
       game={ gameStore.getState().game }

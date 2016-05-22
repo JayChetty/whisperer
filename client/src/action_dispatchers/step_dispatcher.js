@@ -35,10 +35,8 @@ function stepDispatcher(store, dice){
   store.dispatch(stepAction)
 }
 
-function approachDispatcher(store){
+export default function approachDispatcher(store){
   const dice = diceRollDispatcher(store, 2);
   whispererDispatcher(store, dice);
   stepDispatcher(store, dice);
 }
-
-module.exports = approachDispatcher;
