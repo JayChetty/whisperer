@@ -996,7 +996,7 @@
 	});
 	exports.default = catchGameReducer;
 	var _ = __webpack_require__(15);
-	var startState = __webpack_require__(17);
+	var startState = __webpack_require__(206);
 	
 	function createNextApproach(action, state) {
 	  if (state.currentApproach && !state.currentApproach.finished) {
@@ -17161,50 +17161,7 @@
 
 
 /***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
-	  chickens: [{ id: 1,
-	    name: 'Susan',
-	    speed: 6,
-	    scare: 5,
-	    startScare: 5,
-	    owner: null,
-	    raceSteps: 0
-	  }, {
-	    id: 2,
-	    name: 'Bob',
-	    speed: 8,
-	    scare: 4,
-	    startScare: 4,
-	    owner: null,
-	    raceSteps: 0
-	  }, { id: 3,
-	    name: 'Chubby',
-	    speed: 9,
-	    scare: 2,
-	    startScare: 2,
-	    owner: null,
-	    raceSteps: 0
-	  }, {
-	    id: 4,
-	    name: 'Maggie',
-	    speed: 15,
-	    scare: 1,
-	    startScare: 1,
-	    owner: null,
-	    raceSteps: 0
-	  }],
-	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
-	  dice: [],
-	  racingChickenIndex: 0
-	};
-
-/***/ },
+/* 17 */,
 /* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37106,14 +37063,51 @@
 	var ChickenPen = __webpack_require__(189);
 	
 	// var CatchGame = React.createClass({
+	var target = 20;
 	function CatchGame(props) {
+	  //check to see if in race
+	  var inRace = props.game.chickens.every(function (chicken) {
+	    return chicken.owner;
+	  });
 	  //add catcher to chicken
+	  //check if there is a winner
+	  var gameWon = false;
+	  var winningChicken = null;
 	  props.game.chickens.forEach(function (chicken) {
 	    var ownerObject = _.find(props.game.catchers, function (catcher) {
 	      return catcher.id === chicken.owner;
 	    });
 	    chicken.ownerObject = ownerObject;
+	    if (chicken.raceSteps >= target) {
+	      chicken.hasWon = true;
+	      gameWon = true;
+	      winningChicken = chicken;
+	    }
 	  });
+	  var infoBox = React.createElement(ApproachBox, {
+	    approach: props.game.currentApproach,
+	    onNextApproach: props.onNextApproach,
+	    onStep: props.onStep,
+	    catchers: props.game.catchers,
+	    dice: props.dice,
+	    inRace: inRace,
+	    onRaceChicken: props.onRaceChicken
+	  });
+	  if (gameWon) {
+	    infoBox = React.createElement(
+	      'div',
+	      { className: 'panel-item-large' },
+	      React.createElement(
+	        'h4',
+	        null,
+	        ' ',
+	        winningChicken.ownerObject.name,
+	        ' wins with ',
+	        winningChicken.name,
+	        ' ! '
+	      )
+	    );
+	  }
 	  return React.createElement(
 	    'div',
 	    { className: 'panel column-panel' },
@@ -37121,18 +37115,10 @@
 	      chickens: props.game.chickens,
 	      onAttemptSteal: props.onAttemptSteal,
 	      lastAction: props.game.currentApproach.lastAction,
-	      inRace: props.inRace,
+	      inRace: inRace,
 	      racingChickenIndex: props.game.racingChickenIndex
 	    }),
-	    React.createElement(ApproachBox, {
-	      approach: props.game.currentApproach,
-	      onNextApproach: props.onNextApproach,
-	      onStep: props.onStep,
-	      catchers: props.game.catchers,
-	      dice: props.dice,
-	      inRace: props.inRace,
-	      onRaceChicken: props.onRaceChicken
-	    })
+	    infoBox
 	  );
 	}
 	
@@ -37390,6 +37376,9 @@
 	    var classesForImage = "";
 	    if (this.props.lastAction == "SCARE") {
 	      classesForImage = "animated shake";
+	    }
+	    if (this.props.chicken.hasWon) {
+	      classesForImage = "animated tada";
 	    }
 	
 	    if (this.props.chicken.scare === 0) {
@@ -37797,6 +37786,50 @@
 	    return { type: 'SHIFT_RACING_CHICKEN_INDEX' };
 	  }
 	}
+
+/***/ },
+/* 206 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  catchers: [{ id: 1, name: 'Jay' }, { id: 2, name: 'Rick' }],
+	  chickens: [{ id: 1,
+	    name: 'Susan',
+	    speed: 6,
+	    scare: 5,
+	    startScare: 5,
+	    owner: 1,
+	    raceSteps: 0
+	  }, {
+	    id: 2,
+	    name: 'Bob',
+	    speed: 8,
+	    scare: 4,
+	    startScare: 4,
+	    owner: 1,
+	    raceSteps: 0
+	  }, { id: 3,
+	    name: 'Chubby',
+	    speed: 9,
+	    scare: 2,
+	    startScare: 2,
+	    owner: 2,
+	    raceSteps: 0
+	  }, {
+	    id: 4,
+	    name: 'Maggie',
+	    speed: 15,
+	    scare: 1,
+	    startScare: 1,
+	    owner: 2,
+	    raceSteps: 0
+	  }],
+	  currentApproach: { catcher: 2, steps: 0, finished: true, lastAction: null },
+	  dice: [],
+	  racingChickenIndex: 0
+	};
 
 /***/ }
 /******/ ]);

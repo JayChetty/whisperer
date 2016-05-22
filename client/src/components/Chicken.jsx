@@ -14,9 +14,12 @@ var Chicken = React.createClass({
       }
     }
 
-    var classesForImage = "";
+    let classesForImage = "";
     if(this.props.lastAction == "SCARE"){
       classesForImage = "animated shake"
+    }
+    if(this.props.chicken.hasWon){
+      classesForImage= "animated tada"
     }
 
     if(this.props.chicken.scare === 0){
